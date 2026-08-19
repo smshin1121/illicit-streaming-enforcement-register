@@ -1,0 +1,59 @@
+IPOPHL recommends blocking six piracy sites on Nat’l Anti-Piracy Month | IPOPHL 
+
+ Toggle Accessibility Statement 
+ Home 
+ Skip to Main Content 
+ Sitemap 
+
+This website adopts the Web Content Accessibility Guidelines (WCAG 2.0) as the accessibility standard for all its related web development and services. WCAG 2.0 is also an international standard, ISO 40500. This certifies it as a stable and referenceable technical standard. 
+
+WCAG 2.0 contains 12 guidelines organized under 4 principles: Perceivable, Operable, Understandable, and Robust (POUR for short). There are testable success criteria for each guideline. Compliance to these criteria is measured in three levels: A, AA, or AAA. A guide to understanding and implementing Web Content Accessibility Guidelines 2.0 is available at: https://www.w3.org/TR/UNDERSTANDING-WCAG20/
+
+Accessibility Features
+
+Shortcut Keys Combination Activation Combination keys used for each browser.
+
+ Chrome for Linux press (Alt+Shift+shortcut_key) 
+ Chrome for Windows press (Alt+shortcut_key) 
+ For Firefox press (Alt+Shift+shortcut_key) 
+ For Internet Explorer press (Alt+Shift+shortcut_key) then press (enter)
+ On Mac OS press (Ctrl+Opt+shortcut_key)
+
+ Accessibility Statement (Combination + 0): Statement page that will show the available accessibility keys. 
+ Home Page (Combination + H): Accessibility key for redirecting to homepage. 
+ Main Content (Combination + R): Shortcut for viewing the content section of the current page. 
+ FAQ (Combination + Q): Shortcut for FAQ page. 
+ Contact (Combination + C): Shortcut for contact page or form inquiries. 
+ Feedback (Combination + K): Shortcut for feedback page. 
+ Site Map (Combination + M): Shortcut for site map (footer agency) section of the page. 
+ Search (Combination + S): Shortcut for search page. 
+
+Press esc, or click the close the button to close this dialog box.
+
+ × 
+
+ Menu 
+
+ GOVPH 
+
+ IPOPHL recommends blocking six piracy sites on Nat’l Anti-Piracy Month 
+ October 29, 2024 
+ The Intellectual Property Office of the Philippines (IPOPHL) has issued two requests to disable access to six domains and subdomains found pirating movies, a move that coincided with the celebration of National Anti-Piracy Month this October. 
+ One of the requests covered the blocking of SFlix sites, namely sflix.to, sflix.se and sflix.is. The other dealt with MyFlixer sites myflixerz.to, myflixertv.to and myflixer.today. Both requests were posted on the IPOPHL website for five days starting October 24, 2024 before being sent to internet service providers today for their appropriate action, giving website owners time and due process to respond as prescribed by IPOPHL’s Memorandum Circular 2023-025 or the Rules on Voluntary Administrative Site Blocking. 
+ The requests were the result of complaints lodged by the Motion Pictures Association, Inc. — whose member studios include Disney, Netflix, Paramount, Sony, Universal and Warner Bros. Discovery— to the Intellectual Property Rights Enforcement Office (IEO). 
+ According to the MPA’s complaints, “these websites have neither authority nor permission, from the rightsholders, expressed or implied, to make available, publish, copy, print, reproduce, use, or make available for download or for streaming in any manner of any of the Rightsholders’ copyrighted works.” 
+ The copyrighted works at issue include “Shazam!”, “Raya and the Last Dragon”, “Girls Trip”, “Day Shift”, “Jumanji: The Next Level” and “Top Gun: Maverick”, among others. The cited titles only represent “a small, non-exhaustive sample of the widespread infringement” happening on the websites. 
+ A thorough examination of the evidence presented and the evaluation report submitted reveals that all the cited websites are hosting pirated versions of movies or TV shows, allowing users to access these illegal copies by downloading or streaming them. 
+ “By hosting pirated content and allowing users to access illegal copies through downloading or streaming, Respondents undermine the exclusive rights of Complainants,” the requests read, noting such are violations of Section 216 of Republic Act 18293 or the Intellectual Property Code of the Philippines (IP Code) as amended. 
+ “IPOPHL is committed to safeguard the rights of artists and the opportunities that could shape the future of the Philippine creative economy. As an ex-officio member of the Philippine Creative Industries Development Council, IPOPHL is one with the nation in fighting bad actors that derail efforts in cultivating a safe creative environment for artists—an environment where our imaginations can push boundaries and where investments towards creative expressions grow and lead to new works that keep the Philippine’s creative momentum upward and moving,” IPOPHL Deputy Director General Nathaniel S. Arevalo said. 
+ October is celebrated every year as National Anti-Piracy Month pursuant to Proclamation 596 signed in 2018. # # # (Janina Lim, Information Officer III) 
+
+ Facebook 
+
+ Instagram 
+
+ LinkedIn 
+
+ X 
+
+ YouTube

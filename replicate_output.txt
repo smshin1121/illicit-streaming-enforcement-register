@@ -1,0 +1,30 @@
+recomputed from register_cells.csv -- no producer code imported
+CENSUS=240  cooperative=45  domestic=195
+
+[R1] modality prevalence            cooperative   domestic      pooled
+  arrest-search                 39/45  166/195 205/240
+  hosting-takedown              17/45   53/195  70/240
+  asset-seizure                 13/45   52/195  65/240
+  blocking-order                11/45   19/195  30/240
+  domain-seizure                12/45    4/195  16/240
+  end-user-action                1/45   15/195  16/240
+  content-delisting             13/45    2/195  15/240
+  payment-disruption             2/45    0/195   2/240
+  intermediary-process           0/45    1/195   1/240
+
+[R2a] judicial prevalence
+  arrests                       31/45  125/195 156/240
+  indictments                   10/45   52/195  62/240
+  convictions                    3/45   15/195  18/240
+  imprisonments                  2/45    6/195   8/240
+
+[R3] durability
+  not-reported                  40/45  192/195 232/240
+  open-question                  4/45    0/195   4/240
+  no-reconstitution-reported     0/45    2/195   2/240
+  relaunch-reported              1/45    1/195   2/240
+
+---- cross-check against register_stats.txt ----
+quantities checked: 20   disagreeing: 0
+[OK] the published columns determine the published tables
+[SCOPE] this proves the CSVs support the figures. It does not test whether a code is right -- that is what the quotation in each cell row is for.

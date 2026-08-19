@@ -1,0 +1,14 @@
+TITLE: Spanish network behind the illegal distribution of pay-TV channels dismantled
+PUBLISHED: 2016-05-25
+
+A joint investigation by the Spanish National Police and Tax Authorities, with the support of the German local police Hanau, Europol and Eurojust, has resulted in the dismantling of a criminal network specialised in the illegal distribution of pay-TV channels in Spain. The illicit distribution was done through pirated decoders (cardsharing) and the Internet. In total, 30 suspects have been arrested in Spain, and 48 800 decoders seized, alongside EUR 183 200 in cash, 10 luxury vehicles, 1 counterfeit luxury car, a private plane, several financial documents and IT equipment. 
+
+ Operation FAKE began when a Spanish legitimate provider of decoders filed a complaint against another company for counterfeiting and selling their decoders. 
+
+ The investigations revealed the existence of a sophisticated network of companies, including shell companies, through which an organised crime network illegally distributed pay-TV content. The arrestees imported decoders from China, designed the firmware used to decrypt the TV signals and distributed it to the final customers via dedicated web pages and internet forums controlled by them. The criminal group also used Internet Protocol television (IPTV) technology to illicitly offer more than 1 600 TV channels from different countries. They used servers located in various European countries, including Germany which took down the server upon request of the Spanish authorities. 
+
+ During a joint action day on 18 May 2016, 38 house searches were carried out simultaneously in 7 cities in Spain. Europol supported the investigations on-the-spot by deploying 2 experts equipped with mobile offices to the premises of the main target company in Barcelona. This allowed for real-time intelligence analysis and cross-checks against Europol's databases, as well as extractions of data from phones and data storage devices. 
+
+ Operation FAKE represents a great example of cross border cooperation against online intellectual property right infringements. Michael Rauschenbach, Head of Serious and Organised Crime at Europol, says: "This operation shows that these types of crimes are not left unpunished. Thanks to the excellent cooperation between law enforcement agencies across Europe and beyond, they can be effectively investigated and prosecuted. Europol stands ready to continue to offer its full support to EU Member States to investigate and tackle this crime". 
+
+ The criminal gang used various methods to launder the money, such as bitcoin mining. In the framework of the investigations the Spanish authorities discovered and subsequently dismantled 6 bitcoin mining centres, one of the highest numbers of bitcoin mining centres in Europe so far. The criminals used these centres to launder the illicit profits into virtual currency. So far, 78, 3 bitcoins (worth a total of EUR 31 320) have been seized.

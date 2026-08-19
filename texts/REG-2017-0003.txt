@@ -1,0 +1,36 @@
+Sala de prensa 
+
+ En una operación pionera en Europa contra la piratería en Internet 
+
+ La Policía Nacional detiene a tres personas por la distribución ilícita de contenidos de televisión de pago mediante listas M3U 
+
+ Utilizaban un software específico –addon- diseñado para un entorno multimedia muy utilizado en Internet que posibilitaba la defraudación masiva de contenidos y señales de televisión protegidos a nivel mundial 
+
+ 08/03/17 
+ Agentes de la Policía Nacional han detenido a tres personas –una en Valladolid y dos en Sevilla- por la distribución ilícita de contenidos y canales de televisión de pago mediante listas M3U. Los contenidos protegidos eran puestos a disposición de los usuarios de forma fraudulenta a través de una aplicación –addon- diseñado para un entorno multimedia muy utilizado en Internet, creada por uno de los arrestados y perfeccionada con la colaboración de los otros dos. Esta investigación, pionera en Europa, se inició en el mes de octubre de 2016 por agentes del Grupo de Investigación Tecnológica de la Policía Nacional en Valladolid tras la denuncia presentada por una operadora nacional de televisión de acceso condicionado a pago, cuyos derechos de propiedad intelectual eran vulnerados. 
+
+Durante varios años esta aplicación fue continuamente perfeccionada y actualizada gracias a las aportaciones de los detenidos. A través de una web creada al efecto, ponían su descarga a disposición de usuarios ubicados en cualquier punto de la geografía mundial, web que además servía como foro informativo en el que se exponían las funcionalidades y posibilidades aportadas con la misma. Este addon era implementado con listas M3U, enlaces mediante los que facilitaban el acceso a canales de diferentes plataformas de TV de pago de todo el mundo. Entre estos contenidos se encontraban los paquetizados en su opción comercial Premium por la operadora española denunciante. 
+
+ Detenidos en Valladolid y en Sevilla: Los arrestados utilizaban distintos nicks en Internet y mantenían entre ellos un contacto fluido con el fin de desarrollar y perfeccionar el addon, al tiempo que se servían de numerosos foros existentes en la Red para publicitar su actividad. Fruto de las investigaciones realizadas se logró identificar plenamente a los presuntos responsables de esta actividad. Al frente de los tres se encontraba un hombre, detenido en Valladolid, creador y principal desarrollador del addon. Con él colaboraba estrechamente en la programación y desarrollo del programa otro varón, arrestado en Sevilla. El último de los detenidos, residente también en la capital hispalense, se dedicaba a la configuración y comercialización de listas M3U de forma fraudulenta, añadiendo contenidos al addon desarrollado mediante la desencriptación de páginas web en streaming enlazando las URLS para que se pudieran visionar los contenidos por parte de los usuarios de forma gratuita. Los tres arrestados recibían ingresos y donaciones de los usuarios con los que financiaban sus actividades ilícitas. 
+
+ × 
+
+ Para más información, comunicar con el Gabinete de Prensa de la Dirección General de la Policía (Teléfono 91.322.33.19 ) 
+
+ Últimas noticias 
+
+ La Policía Nacional desarticula dos grupos criminales especializados en robos en viviendas y esclarece 32 hechos delictivos 
+ 17/08/26 
+
+ La Policía Nacional detiene a dos fugitivos responsables de la mayor plantación de marihuana incautada en Hungría 
+ 14/08/26 
+
+ La Policía Nacional desarticula una organización criminal dedicada a la trata de mujeres para su explotación sexual en prostíbulos de Soria y Castellón 
+ 14/08/26 
+
+ Desarticuladas dos organizaciones criminales dedicadas a la explotación sexual de mujeres en situación de extrema vulnerabilidad 
+ 13/08/26 
+
+ Ver más 
+
+ ¡síguenos!

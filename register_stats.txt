@@ -1,0 +1,139 @@
+register rows=298  CENSUS=240  cooperative=45  domestic=195
+(source: paper2/register/register.json; intervals Clopper-Pearson exact 95%; no tests)
+
+[R1] modality prevalence
+  code                                         cooperative                          domestic                            pooled
+  arrest-search                 39/45   86.7% [73.2, 94.9]       166/195  85.1% [79.3, 89.8]       205/240  85.4% [80.3, 89.6]
+  asset-seizure                 13/45   28.9% [16.4, 44.3]        52/195  26.7% [20.6, 33.5]        65/240  27.1% [21.6, 33.2]
+  hosting-takedown              17/45   37.8% [23.8, 53.5]        53/195  27.2% [21.1, 34.0]        70/240  29.2% [23.5, 35.4]
+  domain-seizure                12/45   26.7% [14.6, 41.9]         4/195   2.1% [ 0.6,  5.2]        16/240   6.7% [ 3.9, 10.6]
+  blocking-order                11/45   24.4% [12.9, 39.5]        19/195   9.7% [ 6.0, 14.8]        30/240  12.5% [ 8.6, 17.4]
+  content-delisting             13/45   28.9% [16.4, 44.3]         2/195   1.0% [ 0.1,  3.7]        15/240   6.2% [ 3.5, 10.1]
+  payment-disruption             2/45    4.4% [ 0.5, 15.1]         0/195   0.0% [ 0.0,  1.9]         2/240   0.8% [ 0.1,  3.0]
+  intermediary-process           0/45    0.0% [ 0.0,  7.9]         1/195   0.5% [ 0.0,  2.8]         1/240   0.4% [ 0.0,  2.3]
+  end-user-action                1/45    2.2% [ 0.1, 11.8]        15/195   7.7% [ 4.4, 12.4]        16/240   6.7% [ 3.9, 10.6]
+  voluntary-transfer             0/45    0.0% [ 0.0,  7.9]         0/195   0.0% [ 0.0,  1.9]         0/240   0.0% [ 0.0,  1.5]
+  (no modality coded)            0/45    0.0% [ 0.0,  7.9]         8/195   4.1% [ 1.8,  7.9]         8/240   3.3% [ 1.4,  6.5]
+
+[R2a] judicial stage PREVALENCE -- denominator = every census row in the stratum (positive = n=<int> or yes-uncounted)
+  stage                                        cooperative                          domestic                            pooled
+  arrests                       31/45   68.9% [53.4, 81.8]       125/195  64.1% [56.9, 70.8]       156/240  65.0% [58.6, 71.0]
+  indictments                   10/45   22.2% [11.2, 37.1]        52/195  26.7% [20.6, 33.5]        62/240  25.8% [20.4, 31.9]
+  convictions                    3/45    6.7% [ 1.4, 18.3]        15/195   7.7% [ 4.4, 12.4]        18/240   7.5% [ 4.5, 11.6]
+  imprisonments                  2/45    4.4% [ 0.5, 15.1]         6/195   3.1% [ 1.1,  6.6]         8/240   3.3% [ 1.4,  6.5]
+  pending (any stage)           18/45   40.0% [25.7, 55.7]        74/195  37.9% [31.1, 45.2]        92/240  38.3% [32.2, 44.8]
+
+[R2b] judicial FOLLOW-THROUGH -- denominator = rows positive at the PREVIOUS stage (conditional funnel)
+  stage | previous+                            cooperative                          domestic                            pooled
+  indictments | arres+          10/31   32.3% [16.7, 51.4]        33/125  26.4% [18.9, 35.0]        43/156  27.6% [20.7, 35.3]
+  convictions | indic+           3/10   30.0% [ 6.7, 65.2]        15/52   28.8% [17.1, 43.1]        18/62   29.0% [18.2, 41.9]
+  imprisonments | convi+         2/3    66.7% [ 9.4, 99.2]         6/15   40.0% [16.3, 67.7]         8/18   44.4% [21.5, 69.2]
+  census judicial cells from follow-ons                                 0                                19                                19
+
+[R3] reconstitution / durability
+  value                                              cooperative                          domestic                            pooled
+  not-reported                        40/45   88.9% [75.9, 96.3]       192/195  98.5% [95.6, 99.7]       232/240  96.7% [93.5, 98.6]
+  open-question                        4/45    8.9% [ 2.5, 21.2]         0/195   0.0% [ 0.0,  1.9]         4/240   1.7% [ 0.5,  4.2]
+  no-reconstitution-reported           0/45    0.0% [ 0.0,  7.9]         2/195   1.0% [ 0.1,  3.7]         2/240   0.8% [ 0.1,  3.0]
+  relaunch-reported                    1/45    2.2% [ 0.1, 11.8]         1/195   0.5% [ 0.0,  2.8]         2/240   0.8% [ 0.1,  3.0]
+  successor-named                      0/45    0.0% [ 0.0,  7.9]         0/195   0.0% [ 0.0,  1.9]         0/240   0.0% [ 0.0,  1.5]
+  -- any post-action mention           5/45   11.1% [ 3.7, 24.1]         3/195   1.5% [ 0.3,  4.4]         8/240   3.3% [ 1.4,  6.5]
+     of which page-raised              4/45    8.9% [ 2.5, 21.2]         0/195   0.0% [ 0.0,  1.9]         4/240   1.7% [ 0.5,  4.2]
+  -- EVIDENCE-BEARING outcome          1/45    2.2% [ 0.1, 11.8]         3/195   1.5% [ 0.3,  4.4]         4/240   1.7% [ 0.5,  4.2]
+  -- silence, record-only read        44/45   97.8% [88.2, 99.9]       192/195  98.5% [95.6, 99.7]       236/240  98.3% [95.8, 99.5]
+  (page-raised = the coding's `page_only`: the knowledge base's own note that the releases answer nothing, not a post-action record. The last two lines are the same census read two ways: a reader who counts an unresolved question as silence gets the fourth line.)
+
+[R4] private participation (private_named) x stratum
+  cooperative  private_named  22/45   48.9% [33.7, 64.2]
+      with private n= 22  arrests+  15/22   68.2% [45.1, 86.1]  convictions+   0/22    0.0% [ 0.0, 15.4]
+      without      n= 23  arrests+  16/23   69.6% [47.1, 86.8]  convictions+   3/23   13.0% [ 2.8, 33.6]
+  domestic     private_named  36/195  18.5% [13.3, 24.6]
+      with private n= 36  arrests+  23/36   63.9% [46.2, 79.2]  convictions+   2/36    5.6% [ 0.7, 18.7]
+      without      n=159  arrests+ 102/159  64.2% [56.2, 71.6]  convictions+  13/159   8.2% [ 4.4, 13.6]
+  pooled       private_named  58/240  24.2% [18.9, 30.1]
+      with private n= 58  arrests+  38/58   65.5% [51.9, 77.5]  convictions+   2/58    3.4% [ 0.4, 11.9]
+      without      n=182  arrests+ 118/182  64.8% [57.4, 71.8]  convictions+  16/182   8.8% [ 5.1, 13.9]
+
+[R5] domestic stratum by executing country (jurisdiction confound -- read before comparing)
+  poland             n= 34  convictions+  0  any-recon  1
+  spain              n= 27  convictions+  0  any-recon  0
+  greece             n= 26  convictions+  0  any-recon  0
+  germany            n= 12  convictions+  0  any-recon  0
+  hong-kong          n= 11  convictions+  1  any-recon  0
+  thailand           n= 10  convictions+  2  any-recon  1
+  taiwan             n=  9  convictions+  0  any-recon  0
+  italy              n=  8  convictions+  0  any-recon  0
+  peru               n=  7  convictions+  0  any-recon  0
+  united-states      n=  6  convictions+  4  any-recon  1
+  nigeria            n=  6  convictions+  0  any-recon  0
+  sweden             n=  6  convictions+  6  any-recon  0
+  vietnam            n=  6  convictions+  0  any-recon  0
+  south-korea        n=  3  convictions+  0  any-recon  0
+  portugal           n=  3  convictions+  0  any-recon  0
+  netherlands        n=  2  convictions+  0  any-recon  0
+  bulgaria           n=  2  convictions+  0  any-recon  0
+  paraguay           n=  2  convictions+  0  any-recon  0
+  brazil             n=  2  convictions+  0  any-recon  0
+  singapore          n=  2  convictions+  1  any-recon  0
+  cooperative stratum, states involved (top): [('united-states', 18), ('united-kingdom', 17), ('netherlands', 14), ('france', 14), ('germany', 13), ('italy', 13), ('spain', 12), ('bulgaria', 10)]
+
+[R7] publisher type as mechanism -- judicial positives and post-action evidence by the publishing body's type (census)
+  publisher_type          n                        arrests+                    indictments+                    convictions+                       any-recon
+  le                    169     124/169  73.4% [66.0, 79.9]      44/169  26.0% [19.6, 33.3]       7/169   4.1% [ 1.7,  8.3]       6/169   3.6% [ 1.3,  7.6]
+  ministry-regulator     31      10/31   32.3% [16.7, 51.4]       0/31    0.0% [ 0.0, 11.2]       0/31    0.0% [ 0.0, 11.2]       0/31    0.0% [ 0.0, 11.2]
+  igo                    17      13/17   76.5% [50.1, 93.2]       1/17    5.9% [ 0.1, 28.7]       0/17    0.0% [ 0.0, 19.5]       1/17    5.9% [ 0.1, 28.7]
+  prosecutor             16       8/16   50.0% [24.7, 75.3]      10/16   62.5% [35.4, 84.8]       4/16   25.0% [ 7.3, 52.4]       1/16    6.2% [ 0.2, 30.2]
+  court                   7       1/7    14.3% [ 0.4, 57.9]      7/7   100.0% [59.0, 100.0]      7/7   100.0% [59.0, 100.0]       0/7     0.0% [ 0.0, 41.0]
+  (a court publishes verdicts; a police force publishes action days -- the stage a row reaches is bounded by who wrote its release)
+
+[R8] census by publication year and stratum, with post-action record by cohort
+  year      cooperative  domestic   total   any post-action mention    evidence-bearing
+  2014                0         6       6                         1                   1
+  2015                0         3       3                         0                   0
+  2016                1         8       9                         0                   0
+  2017                2         7       9                         0                   0
+  2018                4        15      19                         1                   0
+  2019                3        10      13                         1                   1
+  2020                5        20      25                         1                   1
+  2021                1        18      19                         0                   0
+  2022                3        21      24                         1                   1
+  2023                5        15      20                         0                   0
+  2024                6        33      39                         0                   0
+  2025                6        22      28                         2                   0
+  2026                9        17      26                         1                   0
+  cohorts (age at the census cutoff):
+    2014-2016 (>=9y)     n= 18  any mention   1/18    5.6% [ 0.1, 27.3]   evidence-bearing   1/18    5.6% [ 0.1, 27.3]
+    2017-2019 (>=6y)     n= 41  any mention   2/41    4.9% [ 0.6, 16.5]   evidence-bearing   1/41    2.4% [ 0.1, 12.9]
+    2020-2022 (>=3y)     n= 68  any mention   2/68    2.9% [ 0.4, 10.2]   evidence-bearing   2/68    2.9% [ 0.4, 10.2]
+    2023-2026 (<3y)      n=113  any mention   3/113   2.7% [ 0.6,  7.6]   evidence-bearing   0/113   0.0% [ 0.0,  3.2]
+    (opportunity-at-risk is TIME SINCE PUBLICATION only. It is not an ascertainment measure: no systematic follow-up search was run for any cohort, so a flat gradient bounds right-censoring as an explanation without establishing that a search would have found nothing.)
+
+[R9] declared sensitivity subsets -- the manuscript says the figures 'should be readable' with these rows out; that is a producer's job, not a reader's (codex IC reg3 #25)
+  mixed-target sweeps out: n=236 (41 coop / 195 dom) -- rows whose medium was overridden because the illicit-streaming strand is one item in a wider sweep
+    cooperative  domain-seizure   9/41   22.0% [10.6, 37.6]   arrests+  27/41   65.9% [49.4, 79.9]   silence  36/41   87.8% [73.8, 95.9]
+    domestic     domain-seizure   4/195   2.1% [ 0.6,  5.2]   arrests+ 125/195  64.1% [56.9, 70.8]   silence 192/195  98.5% [95.6, 99.7]
+    pooled       domain-seizure  13/236   5.5% [ 3.0,  9.2]   arrests+ 152/236  64.4% [57.9, 70.5]   silence 228/236  96.6% [93.4, 98.5]
+  wiki-field stratum out: n=197 (9 coop / 188 dom) -- rows whose stratum comes from the knowledge base's country list rather than a re-read of the release
+    cooperative  domain-seizure   1/9    11.1% [ 0.3, 48.2]   arrests+   5/9    55.6% [21.2, 86.3]   silence   9/9   100.0% [66.4, 100.0]
+    domestic     domain-seizure   4/188   2.1% [ 0.6,  5.4]   arrests+ 120/188  63.8% [56.5, 70.7]   silence 185/188  98.4% [95.4, 99.7]
+    pooled       domain-seizure   5/197   2.5% [ 0.8,  5.8]   arrests+ 125/197  63.5% [56.3, 70.2]   silence 194/197  98.5% [95.6, 99.7]
+  page-raised durability as silence: n=240 (45 coop / 195 dom) -- no rows dropped; the durability line is recomputed counting open-question as silence (see R3)
+    cooperative  domain-seizure  12/45   26.7% [14.6, 41.9]   arrests+  31/45   68.9% [53.4, 81.8]   silence  44/45   97.8% [88.2, 99.9]
+    domestic     domain-seizure   4/195   2.1% [ 0.6,  5.2]   arrests+ 125/195  64.1% [56.9, 70.8]   silence 192/195  98.5% [95.6, 99.7]
+    pooled       domain-seizure  16/240   6.7% [ 3.9, 10.6]   arrests+ 156/240  65.0% [58.6, 71.0]   silence 236/240  98.3% [95.8, 99.5]
+
+[R6] provenance
+  origin x stratum: {('walk-2026-08-17', 'domestic'): 141, ('de', 'domestic'): 47, ('walk-2026-08-17', 'cooperative'): 9, ('ic', 'cooperative'): 36, ('ic', 'domestic'): 7}
+  stratum_basis=wiki-fields: 43 (IC rows; stratum from participating_countries, not a source re-read)
+  publisher_type: {'le': 169, 'ministry-regulator': 31, 'igo': 17, 'prosecutor': 16, 'court': 7}
+  text_status: {'full': 240}
+  needs_review: 12
+  page_only cells (IC rows): 38 = judicial 12 + modality 22 + reconstitution 4  (rows touched: 14)
+  private_named basis: {'none': 157, 'coder': 43, 'wiki-flag': 24, 'keywords': 16} (coder = explicit bool in the row; keywords = whole-word match on orgs_named, hits printed by the build; wiki-flag = IC public_private)
+  parents with follow-on cells merged: 10
+  merged CELLS whose source publisher type differs from the parent's: 3 (from 12 source releases)
+    REG-2022-0017 convictions: parent publisher_type=le, cell from coalition-published release(s)
+    REG-2022-0017 imprisonments: parent publisher_type=le, cell from coalition-published release(s)
+    REG-2022-0017 indictments: parent publisher_type=le, cell from coalition-published release(s)
+
+[SCOPE] R2's convictions/imprisonments are read from the action's own release(s) at coding time; a row coded from an announcement release shows later stages only if a follow-on release was cited or a follow-on ROW was merged onto it by the builder (counted above). R2b conditions on the previous stage; R2a does not. R3's silence therefore includes rows nobody re-checked, exactly as the design states. R4's private_named is a keyword/coder covariate, not a source-coded cell. R5 exists because the domestic stratum is dominated by a few publishers whose release conventions differ.

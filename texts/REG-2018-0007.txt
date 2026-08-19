@@ -1,0 +1,16 @@
+TITLE: Europol and Spanish National Police arrest six individuals in a big hit to illegal TV streaming networks 
+PUBLISHED: 2018-03-09
+
+In March 2018 the Spanish National Police supported by Europol’s Intellectual Property Crime Coordinated Coalition (IPC³) , arrested 6 individuals from a crime ring suspected of selling illegal television signals from more than 14 000 international points of sale. The signals were sold through a company which designed the application needed to illegally stream films, television series and sport events. 
+
+ The investigation began when EGEDA 1 , Mediapro 2 and the Spanish Football League filed a complaint with the police. During the course of the investigation police officers discovered a company, seated in Galicia, Spain which was suspected of transmitting signals for paid TV channels illegally. 
+
+ The company developed both the decoder device and the application needed to illegally access the paid channels. The decoder was sold for EUR 120 and the server to transmit the illegal signal was hosted in France and controlled from the business in Spain. 
+
+ In total 8 house searches were carried out in Spain, resulting in the arrest of six members of the organised crime group and the seizure of 4600 IT devices. 
+
+ On the action day Europol supported the investigation on the ground by deploying an analyst and a specialist to Spain equipped with a mobile office and a data extraction device. This allowed for real-time information exchange and cross-checks of the data gathered during the course of the action against Europol’s databases. 
+
+ 1 EGEDA (Entidad de Gestión de Derechos de los Productores Audiovisuales) provides services to the audiovisual industry 
+
+ 2 Mediapro is a Spanish multimedia communications group

@@ -1,0 +1,3 @@
+# Preserve bytes exactly: the SHA-256 values in captures.csv and MANIFEST.md are over
+# these files as committed. End-of-line conversion would invalidate every one of them.
+* -text

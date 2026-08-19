@@ -1,0 +1,163 @@
+Southern District of New York | Minnesota Man Charged With Computer Intrusion And Illegally Streaming Content From Four Major Professional Sports Leagues | United States Department of Justice 
+
+ Skip to main content
+
+ Official websites use .gov 
+
+ A .gov website belongs to an official government organization in the United States.
+
+ Secure .gov websites use HTTPS 
+
+ A lock ( 
+
+ ) or https:// means you’ve safely connected to the .gov website. Share sensitive information only on official, secure websites.
+
+ DOJ Menu 
+
+ U.S. Department
+ of Justice
+
+ About 
+
+ The Attorney General 
+
+ Organizational Chart 
+
+ Budget & Performance 
+
+ History 
+
+ Privacy Program 
+
+ Our Work 
+
+ News 
+
+ Press Releases 
+
+ Speeches 
+
+ Videos 
+
+ Photo Galleries 
+
+ Blogs 
+
+ Podcasts 
+
+ Resources 
+
+ Guidance Documents 
+
+ Forms 
+
+ Publications 
+
+ Information for Victims in Large Cases 
+
+ Justice Manual 
+
+ Business and Contracts 
+
+ Grants 
+
+ Employment 
+
+ Why Justice ? 
+
+ Benefits 
+
+ DOJ Vacancies 
+
+ Legal Careers at DOJ 
+
+ About SDNY 
+
+ Find Help 
+
+ Contact Us 
+
+ Search 
+
+ Menu 
+ Close 
+
+ Search 
+
+ Press Release 
+
+ Minnesota Man Charged With Computer Intrusion And Illegally Streaming Content From Four Major Professional Sports Leagues 
+
+ Thursday, October 28, 2021 
+
+ Share 
+
+ Facebook 
+
+ X 
+
+ LinkedIn 
+
+ Email 
+
+ For Immediate Release 
+
+ U.S. Attorney's Office, Southern District of New York
+
+ Defendant Also Attempted to Extort Approximately $150,000 From Major League Baseball 
+
+ Damian Williams, the United States Attorney for the Southern District of New York, and Michael J. Driscoll, Assistant Director-in-Charge of the New York Field Office of the Federal Bureau of Investigation (“FBI”), announced that JOSHUA STREIT, a/k/a “Josh Brody,” was charged with conducting intrusions into Major League Baseball (“MLB”) computer systems, and illegally streaming copyrighted content from MLB, the National Basketball Association (“NBA”), the National Football League (“NFL”), and the National Hockey League (“NHL”), in connection with a website STREIT operated that offered the illegally streamed content to the public for profit.  In addition, STREIT is charged with extortion for attempting to extort approximately $150,000 from MLB.  STREIT is expected to be presented today before a U.S. magistrate judge in the District of Minnesota.  
+
+ U.S. Attorney Damian Williams said: “Joshua Streit is alleged to have illegally streamed sports content online from MLB, the NHL, the NBA, and the NFL for his own personal profit. Furthermore, Streit allegedly hacked MLB’s computer systems and attempted to extort $150,000 from the league. Thanks to this Office’s teamwork with all four major American sports leagues and the FBI, Streit has struck out on his illegal streaming and extortion scheme.” 
+
+ FBI Assistant Director Michael J. Driscoll said: “We allege Mr. Brody hacked into the systems of several of our country's  biggest professional sports leagues and illegally streamed copyrighted live games. Instead of quitting while he was ahead, he allegedly decided to continue the game by extorting one of the leagues, threatening to expose the very vulnerability he used to hack them. Now instead of scoring a payday, Mr. Brody faces the possibility of a federal prison sentence as a penalty.” 
+
+ According to the Complaint [1] unsealed today in Manhattan federal court: 
+
+ Beginning in or about 2017, to in or about August 2021, JOSHUA STREIT a/k/a, “Joshua Brody,” the defendant, operated a website that streamed copyrighted content, primarily livestreamed games from major professional sports leagues, including MLB, the NBA, the NFL, and the NHL, which STREIT had no authorization to stream.  STREIT obtained the copyrighted content by gaining unauthorized access to the websites for those sports leagues via misappropriated login credentials from legitimate users of those websites.  One of the victim sports leagues sustained losses of approximately $3 million due to STREIT’s conduct. 
+
+ In addition, at the same time STREIT was illicitly streaming copyrighted content from MLB, STREIT was engaged in an attempt to extort approximately $150,000 from MLB via a threat from STREIT to publicize alleged vulnerabilities in MLB’s internet infrastructure.  STREIT initiated the extortion scheme at the same time that he was exploiting MLB’s computer systems to gain unauthorized access to copyright content that he streamed for profit. 
+
+ *                      *                      * 
+
+ STREIT, 30 of St. Louis Park, Minnesota, is charged with: (1) one count of knowingly accessing a protected computer in furtherance of a criminal act and for purposes of commercial advantage and private financial gain, which carries a maximum sentence of five years in prison; (2) one count of knowingly accessing a protected computer in furtherance of fraud, which carries a maximum sentence of five years in prison; (3) one count of wire fraud, which carries a maximum sentence of 20 years in prison; (4) one count of illicit digital transmission, which carries a maximum sentence of five years in prison; and (5) one count of sending interstate threats with the intent to extort, which carries a maximum sentence of two years in prison.  The maximum potential sentences in this case are prescribed by Congress and are provided here for informational purposes only, as any sentencing of the defendant will be determined by the judge. 
+
+ Mr. Williams praised the outstanding work of the FBI.  He also thanked MLB, the NBA, the NFL, and the NHL for their ongoing support and assistance with the case. 
+
+ The case is being handled by the Office’s Complex Frauds and Cybercrime Unit, and Assistant U.S. Attorney Dina McLeod is in charge of the prosecution. 
+
+ The charges contained in the Complaint are merely accusations and the defendant is presumed innocent unless and until proven guilty. 
+
+ [1] As the introductory phrase signifies, the entirety of the text of the Complaint, and the description of the Complaint set forth herein, constitute only allegations, and every fact described should be treated as an allegation. 
+
+ Contact 
+
+ james.margolin@usdoj.gov 
+(212) 637-2600 
+
+ Updated October 28, 2021 
+
+ Topics 
+
+ Cybercrime 
+ Financial Fraud 
+
+ Component 
+
+ USAO - New York, Southern
+
+ Press Release Number: 21-303 
+
+ Related Content 
+
+ Press Release Florida Woman Sentenced To Two Years In Prison For Orchestrating Multimillion-Dollar Federal Student Aid Loan Forgiveness Fraud Scheme United States Attorney for the Southern District of New York, Jamie McDonald, Special Agent in Charge of the U.S. Department of Education Office of Inspector General’s Eastern Regional Office (“DOE OIG”), Jamila... 
+
+ July 31, 2026 
+
+ Press Release Ghanaian National Sentenced To 85 Months In Prison For Stealing More Than $10 Million Via Romance Scams United States Attorney for the Southern District of New York, Jay Clayton, announced today that DERRICK VAN YEBOAH, a/k/a “Van,” was sentenced to 85 months in prison for his role... 
+
+ July 28, 2026 
+
+ Press Release Chief Executive Officer Of Steel Manufacturer Pleads Guilty In Connection With $66 Million Fraud Scheme United States Attorney for the Southern District of New York, Jay Clayton, announced the guilty plea of DEREK WACHOB for orchestrating a multi-year scheme to defraud individual investors, a bank... 
+
+ July 27, 2026
