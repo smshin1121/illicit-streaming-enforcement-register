@@ -60,6 +60,16 @@ still serves them, and several pages in this register have already moved.
 `producers/register_check.py --refetch N` re-fetches a deterministic sample and
 re-checks every quotation against the live page.
 
+**The excluded candidate queue is also not here.** The paper's limitations
+section quotes figures about a queue of coalition-published candidates that were
+held OUT of the census -- how many there are, how many are one document
+catalogued twice, how many describe an action the register already holds. Those
+come from a screen in the working repository that reads a candidate queue this
+bundle does not carry (the 85-pair adjudication behind them is stored there as
+`paper2/queueb_adjudication.csv`). Every row that IS analysed is here, with every coded
+cell; the excluded queue is not, so those particular numbers are the one part of
+the paper this bundle cannot check.
+
 ## Status
 
 The accompanying manuscript is in preparation. Author metadata and a citation

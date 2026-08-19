@@ -133,7 +133,7 @@ request or joint action does.
 | `reconstitution` | `{value, as_of, quote}` | per `CODING.md` Column 3 |
 | (quotes) | per cell | **every non-null coded cell carries a character-exact span that `grep -F` finds in the saved text**: `judicial.<stage>.quote` (+ optional `quotes: [...]` with every supporting span, each verified), `reconstitution.quote`, `modality_quotes[]`. `tools/register_check.py` verifies against the coder's SAVED `<id>.txt` (and `<id>_*.txt` / `<id>.twin*.txt` secondaries); a live re-fetch happens only for the `--refetch N` sample. There is no top-level `quotes` field (this row said there was, codex IC reg1) |
 | `dedup` | `{verdict, matches[]}` | against IC slugs, DE ids, other register rows |
-| `coalition_only` | bool | true when no state-actor release for the action is known |
+| `coalition_only` | bool | true when no state-actor release for the action is known. ⚠ **Determined by the coder only for walk rows.** `register_from_ic.py` writes `False` unconditionally for wiki-converted rows, so on those it records "nobody asked", not "a state release is known" — an absence inherited rather than established (L78). Inert for every count as it stands: all 13 coalition-published `rows_ic` rows fail the census predicate on `publisher_type` before this flag is read, and the build reports them under that reason (`publisher_type=coalition`, 13) separately from the 6 it excludes as `coalition-only`. Do not read the `False` as evidence |
 | `notes` | string | |
 
 ## What is deliberately not in the register
@@ -280,6 +280,232 @@ coordinated action day" is `action_date` against the coalition's stated
 operational window — it settled B41 outright, where the participant roster
 alone pointed the wrong way (France *is* a Kratos-2 participant).
 
+## Queue B against the register (2026-08-20)
+
+**The claim that was never tested.** `register_triage.py` routes a walk candidate
+to queue B when *the candidate's own publisher* is a rights-holder coalition. Its
+docstring is careful about what that means -- "hold; **enters only if no state
+release**" -- but nothing ever ran the test that condition names, and the
+manuscript had turned it into a finding: "322 candidate rows published **only** by
+rights-holder coalitions". 322 is the number of coalition-published candidates.
+The number of actions with no state publisher is a different number, and this is
+L80 one level above the register: a screen whose population is not its subject.
+
+**Two independent corrections to 322, and neither is the whole answer.**
+
+1. **Queue B was catalogued twice.** `python tools/register_screen_queueb.py
+   --dupes` compares queue B against itself: **18 candidate rows are a second
+   entry for a document already in the queue** -- 16 CODA articles walked both
+   as "CODA (rows C)" and as "Japan / CODA-relayed", 2 beIN releases the same
+   way. So 322 candidate rows are **at most 304 distinct documents** —
+   URL identity catches a document entered twice under one URL, not one entered
+   twice under two, so 18 is a floor on the excess and 304 a ceiling on the
+   documents. (One further
+   pair, A68/B3, shares a slug across two publishers: ACE's and beIN's own copies
+   of one joint announcement. That is the co-publication question, not a
+   catalogue error, and it is left to reading.)
+   - ⚠ My first version of this check compared URL strings exactly and found
+     sixteen. An adjudicator found the seventeenth I had missed: B1 and QA-1 are
+     the same beIN release, but one walk agent stored the bare slug and the other
+     the absolute URL. Comparing the final path segment instead found eighteen.
+     L54 said comparing URLs as strings leaks; it leaks in this direction too.
+2. **At least ten of the remainder are second cites.** A mechanical screen paired
+   candidates against register rows; four read-only adjudicators read **85 pairs
+   over 55 tier-1 candidates** against the register rows' saved release texts, and
+   every SAME verdict was then re-verified here with `grep -F`. The producer
+   reports **SAME 13 candidate rows, DISTINCT 71, UNRESOLVED 1**, and the
+   thirteen rows are **10 distinct coalition releases whose action the register
+   already holds under a state release** — the CODA candidates collapse because
+   two ids are one article. `python tools/register_screen_queueb.py
+   --adjudicated` prints them and re-finds each deciding identifier in the
+   register text, so the count falls if a text is re-fetched and the identifier
+   goes.
+   - ⚠ **13 is the number READ, not the number known.** `JP-9` is the same
+     document as the adjudicated `C10` (`coda-cj.jp/news/751/`) and was never
+     surfaced for reading, so under this round's own URL-identity rule **14
+     candidate rows are known second cites**. The producer prints that figure
+     beside the read one. The document count is the one that means anything;
+     the row count is a fact about what the screen surfaced.
+
+| candidate | register row | what decided it |
+|---|---|---|
+| A29 | B32 | the police release names ACE as complainant; eight arrests, same day |
+| A50 | CC3-4 | `Carrasquillo`, sentenced to 66 months |
+| A80 | B27 | police + customs + ACE, the trio only B27 carries |
+| A95 | DTH-4 | `fwiptv.cc` |
+| C10 (= JP-9) | DTW-3 | `JoyTV`, same arrest date and city |
+| C12 (= JP-11) | DTW-4 | `TvPay` |
+| C13 (= JP-12) | DTW-5 | both prosecution venues, CODA credited, damages over NT$1bn |
+| C14 (= JP-13) | DTW-7 | the masked brand, ten suspects, 332 devices |
+| L17 | DTH-1 | `Thaiexpat.tv`, the 11 May 2017 raids, THB 15M |
+| P4 | B38 | Groningen, cardsharing, Ziggo, the March-2017 end date |
+
+⚠ **The two corrections are independent measurements of overlapping sets.**
+4 of the 10 second-cite releases are among the 18 articles that were catalogued
+twice (the CODA articles `722`, `728`, `735`, `751`). They compose correctly --
+the first correction is counted in candidate ROWS and the second in DOCUMENTS,
+so at most 304 minus 10 is the right arithmetic and nothing is subtracted
+twice -- but
+"two independent corrections" invites a picture of two disjoint sets, and that
+picture is wrong.
+
+**The adjudication is stored, and here is what it cannot prove.**
+`paper2/queueb_adjudication.csv` holds one row per pair -- candidate, register
+row, which reader had it, verdict, the identifier that decided a SAME, and the
+screen signal that produced the pair. **The adjudication counts** -- 85 pairs,
+55 candidates, 13 SAME / 71 DISTINCT / 1 UNRESOLVED, and the per-reader split
+24/25/20/16 -- are derived from it. ⚠ The queue figures are NOT: 18, 16/2, 304,
+the 14th known row and the overlap of 4 all come from queue B's own URL groups,
+and this paragraph said "every count above" until codex round 4. And
+`tools/register_screen_queueb.py --adjudicated` re-finds each SAME identifier in
+the register text on every run, so a verdict resting on a quotation that has
+disappeared falls to STALE rather than staying green.
+
+What the file cannot support:
+
+- **Why any of the 71 DISTINCT pairs was rejected.** Those arguments were made
+  in the four readers' reports and are summarised here by failure mode. The file
+  records what was read and what it was called.
+- **That it faithfully transcribes the reading.** The pair list was extracted
+  from the generated dossiers rather than retyped, and reconciles with the four
+  reports (24/25/20/16 = 85, 55 candidates, 13/71/1) -- but those dossiers and
+  reports were session artefacts and are not retained, so nothing in this
+  repository can re-derive the file. An altered verdict would pass every check
+  here except the SAME identifier re-finding. That is the honest limit of this
+  evidence, and it is the reason the DOCUMENT count rather than the pair count is
+  the figure the manuscript leans on.
+
+**10 is a floor, and the reason is measurable.** Only 55 of 322 candidates were
+read, leaving **267 unread**. And the screen that chose those 55 is weak: fired
+at the pairing relations already recorded in the data — one in a register row's
+`dedup.matches`, the rest written by walk agents into candidates' verdict cells
+as `possible-dup:<register slug>` — it surfaces 3 of 11; collapsing the two
+candidate ids that are one document, 3 of 10; and excluding `JP-11/DTW-4`, the
+pair the screen was **tuned on while it was written**, **2 of 9**. Quote the
+last one: the first denominator counts a catalogue duplicate twice and scores
+the detector on its own tuning case.
+
+⚠ **This read "4 of 12" for one commit, and the twelfth relation was one I
+invented.** I extracted any register slug appearing in a candidate's verdict
+cell. `S1`'s verdict says `**new**` and names a register row as the *source* of
+a claim that row itself flags as unverified — the opposite of a duplicate
+assertion — and it was one of only two **tier-1** hits. A control set assembled
+by the detector's author is not a control set (codex cross-verification,
+2026-08-20). ⚠ What remains after removing it is not a holdout either: the whole
+set was assembled after the fact by the same author. `2 of 9` is the least
+biased number available, which is weaker than an out-of-sample result and is
+quoted as such.
+
+⚠ **And "tier 2 and the unpaired remainder were not read" would be false.** The
+word-boundary repair below was applied *after* the reading and demoted 9 of the
+55 into tier 2 and 1 into the unpaired group. The producer now prints the read
+and unread halves of each tier rather than inviting the subtraction: tier 1 is
+45 read / 0 unread, tier 2 is 9 read / 117 unread, unpaired is 1 read / 150
+unread. 117 + 150 = 267, which is the unread count; 126 + 151 is not.
+
+Two structural reasons for the misses, both stated rather than patched away:
+
+- Distinctiveness measured by document frequency penalises exactly the targets
+  that recur. `StreamEast` is excluded from the near-identifier set *because*
+  several register texts name it.
+- The date window encodes the *duplicate* relation, and half those pairs are the
+  same case at a later stage, which the unit rule treats as a follow-on. A
+  conviction eleven months after the takedown is a different action.
+
+**What the adjudication said about the screen itself**, because a reading queue
+that is wrong in a patterned way is worth recording:
+
+- **Every KEY token that decided a pair correctly was a proper noun**
+  (`Carrasquillo`, `TvPay`, `JoyTV`, `fwiptv.cc`, `Thaiexpat.tv`, `Groningen`).
+  Every KEY that decided nothing was a common noun -- `backend`, `precursor`,
+  `warehouse`, `brothers`, `establishments`, `disable`, `pandemic`, `detention`,
+  `ulovlige`, `nieuws`, `Politie`, `set-top-box`, and more.
+- **Case-folded substring matching was the single largest error source.** KEYs
+  matched *inside longer words, usually in another language* — this list said
+  "seven" above nine of them until review counted, which is the L73 rule about
+  writing a list and its length side by side, broken in the entry that cites it:
+  `Cobra` in
+  "cobraban", `aktion` in "Durchsuchungsaktion", `pirateri` in "pirateria",
+  `antes` in "cooperantes"/"denunciantes"/"integrantes", `Magis` in "magistrats"
+  and in "Magistrate", `Carbon` in "Sara Carbonero", `Retten` in "Zigaretten",
+  `staat` in "Staatsanwaltschaft", `richt` in a URL path `gerichte-und-behoerden`.
+  Anchoring at word boundaries and respecting case removes all of them without a
+  stoplist, and it is simply the right test: an identifier that matches half a
+  word has not matched. Applied AFTER the adjudication, so the 55 candidates
+  that were read are the pre-fix tier 1; the fix takes tier 1 to 45 for the
+  next round and does not retract anything read here. The 13 SAME verdicts
+  all survive it -- every one was decided by a proper noun.
+- **The screen was reading things the register does not code.** Several
+  `rows_ic/*.txt` are bundles -- the coded release plus every other raw the wiki
+  page cited. For one row the bundle is 98.3% a single IPEC annual report of
+  439,484 characters. ⚠ That last figure read "439 KB" until codex round 4:
+  the number was right and the UNIT was invented -- 439k is the character count,
+  while the file is 448.4 kB decimal / 437.8 KiB binary, so "439 KB" named
+  neither. (The reviewer also measured the share as 98.2%; that is a different
+  span boundary, and the value here is the one `census_bundled_evidence.py`
+  emits.) Junk
+  KEYs landed in those annexes (`precursor` as a drug precursor, `Highway` as
+  Brazil's Federal Highway Police, `dynamic` in a CFIUS sentence), in HTML
+  (`modified` in `article:modified_time`, `Outer` in a CSS class name), in
+  captured page chrome (`installateur` in an air-conditioning sidebar, `Magis` in
+  a DOJ "Related Content" teaser about an unrelated case), and once in an
+  archivist's own provenance note (`loaded` inside "downloaded").
+  - ⚠ **This is a defect in the screen, not in the register.** I first measured
+    whether coded quotes land outside the first bundled document and got 36 of
+    36, which reads like a finding and is not one: for a wiki-converted row the
+    whole cited set *is* the evidence base. The question that bears on the paper
+    is narrower -- do census rows quote from a document that is not a state
+    release? Of 76 such cells in 22 bundled census rows: 60 are other **state
+    press releases** (Garda beside Europol, GdF beside Polizia), 12 are the wiki
+    page's own prose and **all 12 are correctly flagged `page_only`**, 2 are a
+    WIPO case study of Operation Casper, and 2 are an AAPA article about it.
+    Those last 4 -- the producer counts them; this sentence no longer adds
+    2 and 2 -- are the only cells here resting on something that is neither a
+    state release nor a flagged page claim, and they are modality quotes on one
+    row. ⚠ This breakdown read "60 and 12" and stopped, leaving 4 cells
+    unaccounted while concluding the design handles the whole issue (codex
+    cross-verification, 2026-08-20). It is produced by
+    `python tools/census_bundled_evidence.py`, which counts a CELL by its primary
+    quote; the **28** further supporting spans those cells carry in
+    `quotes: [...]` also land outside the first document and are reported on
+    their own line rather than folded in, because a supporting span is not
+    another coded judgement.
+
+**Read but not settled.** `N12` (BREIN, "Hicham O.", 1.3M customers) against
+`B39` (FIOD, four arrests in Almere and Den Helder). The FIOD release names no
+defendant and says "honderdduizenden abonnees", a mild disconfirmation of 1.3M;
+the Europol twin AE4 is equally silent, and AE4's own note already records that
+the candidate table's link to the Hicham O. case "is not in this release and was
+not used". Capturing the BREIN page would settle it; if it settles SAME the floor
+is eleven.
+
+**Three things found on the way that are not about queue B.**
+
+- **A59's walk row justifies `new` with "(grep futbollibre = 0)", and
+  `futbollibre.net` occurs twice in `CC4-9`.** The verdict survives -- Indecopi's
+  Peruvian ex-officio ISP-blocking resolution is not ACE's Argentine ring
+  takedown -- but the stated reason does not. The grep was run against the wiki
+  corpus, and `CC4-9` is a walk-coded row that was not in it; the population was
+  not the subject, again.
+- **`DTH-4` and `DTH-9` are two rows of one DSI case** (Special Case 33/2563
+  against `fwiptv.cc`): the 2021 raid and the 2024 case file to prosecutors.
+  Whether that is a follow-on under the unit rule is a live question for the
+  census, not for queue B.
+- **`S13`'s Argentine order is quoted inside a state-published register text.**
+  `argentina-ufeci-laliga-...-magistv-...-2025-07` carries "la eliminacion
+  judicial de aplicaciones como MagisTV y FlujoTV -pendiente aun de ejecucion por
+  parte de Google-", and DEPORTV is Argentine state media. The action of that row
+  is the July-2025 reseller raids, so the pair is DISTINCT -- but the candidate is
+  not "published only by a coalition" either.
+
+**What this does not license.** Nothing here says the coalition-only stratum is
+empty or small. It says the number quoted for it counted documents twice and
+counted second cites as members, that the corrected document count is at most
+304, that
+at least ten of those are second cites, and that the remainder is unread. The
+sensitivity stratum the design calls for still has to be coded before anything
+can be said about what it would do to the figures.
+
 ## Published (2026-08-19)
 
 The bundle is public at **https://github.com/smshin1121/illicit-streaming-enforcement-register**, a repository containing only the bundle: no
@@ -311,6 +537,22 @@ disagreeing.
 Also fixed on the way: `register.json` recorded `built_from` as absolute local
 paths, putting one machine's username and directory layout into a file that is
 supposed to be identical for every replicator. It is repo-relative now.
+
+**A third instance of the same class, found 2026-08-20.** The end-of-line
+finding above was the READER's side: git converting bytes on checkout would have
+broken every published hash. The writer's side was still open. The build copies
+our own markdown and scripts out of the working tree, and this repository has
+`core.autocrlf=true` with no `.gitattributes` — so those bytes are a function of
+when git last checked the file out, and a checkout could move a published hash
+with no edit behind it. `documents/` and `producers/` are now copied with line
+endings normalised to LF.
+
+⚠ **`texts/` is deliberately excluded from that normalisation**, and the
+exclusion is the point: those bytes are the bytes a cell was coded from, and
+`captures.csv` publishes their SHA-256 as exactly that claim. Normalising them
+would make the hash agree with a file nobody read. Verified after the change:
+175 of 175 shipped texts still hash to their published value and all 175 still
+contain CRLF; the three documents and nine producers are LF.
 
 ## Reverse `pending` screen (2026-08-19)
 

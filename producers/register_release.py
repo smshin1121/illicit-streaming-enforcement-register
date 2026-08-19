@@ -271,6 +271,16 @@ still serves them, and several pages in this register have already moved.
 `producers/register_check.py --refetch N` re-fetches a deterministic sample and
 re-checks every quotation against the live page.
 
+**The excluded candidate queue is also not here.** The paper's limitations
+section quotes figures about a queue of coalition-published candidates that were
+held OUT of the census -- how many there are, how many are one document
+catalogued twice, how many describe an action the register already holds. Those
+come from a screen in the working repository that reads a candidate queue this
+bundle does not carry (the 85-pair adjudication behind them is stored there as
+`paper2/queueb_adjudication.csv`). Every row that IS analysed is here, with every coded
+cell; the excluded queue is not, so those particular numbers are the one part of
+the paper this bundle cannot check.
+
 ## Status
 
 The accompanying manuscript is in preparation. Author metadata and a citation
@@ -289,6 +299,15 @@ def write_csv(path, columns, records):
             w.writerow({k: flat(rec.get(k)) for k in columns})
 
 
+def copy_lf(src_path, dst_path):
+    """Copy one of OUR files with line endings normalised to LF.
+
+    Never used for `texts/`: those bytes are the bytes a cell was coded from,
+    and captures.csv publishes their SHA-256 as exactly that claim.
+    """
+    dst_path.write_bytes(src_path.read_bytes().replace(b"\r\n", b"\n"))
+
+
 def build(out: pathlib.Path) -> dict:
     if out.exists():
         shutil.rmtree(out)
@@ -299,7 +318,7 @@ def build(out: pathlib.Path) -> dict:
     data = json.loads((REG / "register.json").read_text(encoding="utf-8"))
     rows = data["rows"]
 
-    shutil.copyfile(REG / "register.json", out / "register.json")
+    copy_lf(REG / "register.json", out / "register.json")
     write_csv(out / "register_rows.csv", ROW_COLUMNS, rows)
     write_csv(out / "register_cells.csv",
               ["register_id", "dimension", "key", "value", "quote", "quote_basis",
@@ -332,12 +351,21 @@ def build(out: pathlib.Path) -> dict:
               ["register_id", "url", "fetch_rung", "text_status", "words", "text_sha256",
                "text_bytes", "redistributable", "path_in_bundle", "how_to_obtain"], caps)
 
+    # OUR OWN files are copied with line endings normalised to LF; the bytes in
+    # the working tree depend on when git last checked them out (core.autocrlf is
+    # on here and there is no .gitattributes), and a published hash must not move
+    # because of a checkout. This must NOT be done to `texts/`: those bytes are
+    # the bytes a cell was coded from, and captures.csv publishes their hash as
+    # exactly that claim.
+    # register.json and replicate.py get the same treatment further down: every
+    # file whose hash goes in MANIFEST.md and which WE author is normalised, and
+    # every file whose hash goes in captures.csv is not.
     for rel in DOCS:
-        shutil.copyfile(REPO / rel, out / "documents" / pathlib.PurePath(rel).name)
+        copy_lf(REPO / rel, out / "documents" / pathlib.PurePath(rel).name)
     for rel in PRODUCERS:
         src = REPO / rel
         if src.is_file():
-            shutil.copyfile(src, out / "producers" / pathlib.PurePath(rel).name)
+            copy_lf(src, out / "producers" / pathlib.PurePath(rel).name)
 
     stats = subprocess.run([sys.executable, str(REPO / "tools" / "register_stats.py")],
                            capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=str(REPO))
@@ -346,7 +374,7 @@ def build(out: pathlib.Path) -> dict:
     # The bundle carries its own independent replication check and MUST pass it: a bundle whose
     # published columns do not determine its published tables is a dataset you can look at and
     # cannot recompute from, which is the failure this whole artifact exists to rule out.
-    shutil.copyfile(REPO / "tools" / "register_replicate_csv.py", out / "replicate.py")
+    copy_lf(REPO / "tools" / "register_replicate_csv.py", out / "replicate.py")
 
     # Publication files. Generated, not maintained by hand: a README that states a census size
     # is a figure like any other, and the one place it must not drift from is the register.

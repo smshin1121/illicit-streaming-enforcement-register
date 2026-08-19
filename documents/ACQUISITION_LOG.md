@@ -388,7 +388,16 @@ Counting method: candidate rows above with verdict `new` (opened releases only),
 routed the 627 parsed candidate rows into A = 211 (state-actor publisher, to
 code), B = 322 (coalition publisher, held as the "privately announced"
 sensitivity stratum, not yet coded), OUT = 94 (agent verdict dup / not an
-action). Queue A was coded to `paper2/register/rows_walk/` (211 rows: 185
+action). ⚠ **B = 322 counts candidate rows, not actions.** Measured 2026-08-20
+(`register_screen_queueb.py`): 18 of those rows are a second entry for a
+document already in the queue — 16 CODA articles walked both as "CODA
+(rows C)" and as "Japan / CODA-relayed Taiwan & China", 2 beIN releases the
+same way — leaving **at most 304 distinct documents** (URL identity does not
+catch one document entered twice under two URLs); and of the 55 candidates a screen
+ranked highest for overlap, 13 rows (10 distinct releases) describe an action
+the register already holds under a **state** release, so they are second cites
+rather than members of the stratum. Both figures are bounds: 267 candidates are
+unread. Queue A was coded to `paper2/register/rows_walk/` (211 rows: 185
 gated register rows + 26 shells where the fetch failed — gov.br/pf login wall,
 politi.dk TLS refusal, afp.gov.au 404s, gdbop.bg moved page — listed by
 `register_build.py`). Build of 2026-08-17 (after codex IC reg1): 332 rows
