@@ -61,7 +61,7 @@ serves them. Pages move, and several in this register already have.
 | `captures.csv` | `b0b663d345c1d4370cb7ddce5128f40bc7eb5c5dd002d49f66e42f88c729fd04` |
 | `documents/ACQUISITION_LOG.md` | `7ca84ea3ed124c8d2c94c25ec16b1044b4fef3a7032b360d4b7dfb9d78a7cbc6` |
 | `documents/CODING.md` | `020018ce5626292fdbb9d47015d976602937269474ca7c66d43230e18ca7800b` |
-| `documents/REGISTER.md` | `0bb25fa20b442b8842dce2e22d03ceb4a50aa202cd0786860c24573ea6e9a6e0` |
+| `documents/REGISTER.md` | `c5ae6b3e48d3b21baaf3c48e90acf87498ecdb7e37e39d29c214926685f9cc3b` |
 | `producers/acquisition_census.py` | `f8666e5b1b53b336af1bcd3c4a56b53a19339224fe4d1b850b37a76674c0a6d5` |
 | `producers/fetch_text.py` | `f6df0cac579ee93c55929fe637193076fa4bb3563e344ac2c4cd0edbd877b720` |
 | `producers/paper2_stats.py` | `456ff2363a6d4f32f48887f9f144984b7ce1f0689ac0a7ec8a63b0fcd4122369` |

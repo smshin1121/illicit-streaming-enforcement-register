@@ -280,6 +280,38 @@ coordinated action day" is `action_date` against the coalition's stated
 operational window — it settled B41 outright, where the participant roster
 alone pointed the wrong way (France *is* a Kratos-2 participant).
 
+## Published (2026-08-19)
+
+The bundle is public at **https://github.com/smshin1121/illicit-streaming-enforcement-register**, a repository containing only the bundle: no
+history from here, no `raw/`, no working notes. This repository stays private.
+
+The publication audit changed two things before anything was pushed, and both
+are the kind of defect that is invisible until someone else tries to use the
+artifact:
+
+1. **Redistribution was keyed on the row DIRECTORY**, which is a proxy for
+   provenance and not for copyright. `rows_walk` was treated as shareable
+   wholesale, and two of the texts it shipped were a private company's own site
+   notices. The rule is now keyed on the PUBLISHER: a text ships only if its
+   row's publisher is a state or intergovernmental body (`publisher_type` in the
+   state set) writing on its own domain (`publisher_tier == 1`). 177 -> 175.
+2. **Git's end-of-line conversion would have invalidated every published
+   hash.** The SHA-256 values in `captures.csv` and the manifest are over the
+   bytes as committed; a replicator cloning with `autocrlf` on would have
+   received different bytes and every check would have failed for a reason with
+   nothing to do with the data. The bundle now ships `.gitattributes` with
+   `* -text`.
+
+Verified from a fresh clone of the public repository, not from the build
+directory: **175/175 shipped texts re-hash to their published SHA-256**,
+**23/23 manifest-listed files match**, and the bundle's own `replicate.py`
+recomputes the tables from the CSVs alone with 20 quantities checked and 0
+disagreeing.
+
+Also fixed on the way: `register.json` recorded `built_from` as absolute local
+paths, putting one machine's username and directory layout into a file that is
+supposed to be identical for every replicator. It is repo-relative now.
+
 ## Reverse `pending` screen (2026-08-19)
 
 The v4 `pending` floor had been applied in ONE DIRECTION. Rows were moved *into*
