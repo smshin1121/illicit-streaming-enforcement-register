@@ -397,8 +397,12 @@ def main() -> int:
           " follow-ons whose parent is not loaded:", sum(1 for r in out if r.get("follow_on_parent_missing")))
     print("  private_named    :", dict(Counter((r["stratum"], r["private_named"]) for r in census)),
           " basis:", dict(Counter(r.get("private_named_basis") for r in census)))
-    print("  stratum_basis=wiki-fields (IC rows not re-read from source):",
-          sum(1 for r in census if r.get("stratum_basis") == "wiki-fields"))
+    # Both halves: the manuscript quotes the total AND its cooperative subset, and
+    # a subset with no producer is a number that rots the first time a row is
+    # re-read from source -- which is exactly what happened on 2026-08-20.
+    _wf = [r for r in census if r.get("stratum_basis") == "wiki-fields"]
+    print("  stratum_basis=wiki-fields (IC rows not re-read from source):", len(_wf),
+          "of which cooperative:", sum(1 for r in _wf if r["stratum"] == "cooperative"))
     print("\nregister rows NOT in census, by reason:")
     for k, n in Counter(r["census_exclusion"] for r in out if not r["in_census"]).most_common():
         print(f"   {n:4d}  {k}")

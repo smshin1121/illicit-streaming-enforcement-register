@@ -32,13 +32,13 @@ register rows=298  CENSUS=240  cooperative=45  domestic=195
 
 [R3] reconstitution / durability
   value                                              cooperative                          domestic                            pooled
-  not-reported                        40/45   88.9% [75.9, 96.3]       192/195  98.5% [95.6, 99.7]       232/240  96.7% [93.5, 98.6]
-  open-question                        4/45    8.9% [ 2.5, 21.2]         0/195   0.0% [ 0.0,  1.9]         4/240   1.7% [ 0.5,  4.2]
+  not-reported                        41/45   91.1% [78.8, 97.5]       192/195  98.5% [95.6, 99.7]       233/240  97.1% [94.1, 98.8]
+  open-question                        3/45    6.7% [ 1.4, 18.3]         0/195   0.0% [ 0.0,  1.9]         3/240   1.2% [ 0.3,  3.6]
   no-reconstitution-reported           0/45    0.0% [ 0.0,  7.9]         2/195   1.0% [ 0.1,  3.7]         2/240   0.8% [ 0.1,  3.0]
   relaunch-reported                    1/45    2.2% [ 0.1, 11.8]         1/195   0.5% [ 0.0,  2.8]         2/240   0.8% [ 0.1,  3.0]
   successor-named                      0/45    0.0% [ 0.0,  7.9]         0/195   0.0% [ 0.0,  1.9]         0/240   0.0% [ 0.0,  1.5]
-  -- any post-action mention           5/45   11.1% [ 3.7, 24.1]         3/195   1.5% [ 0.3,  4.4]         8/240   3.3% [ 1.4,  6.5]
-     of which page-raised              4/45    8.9% [ 2.5, 21.2]         0/195   0.0% [ 0.0,  1.9]         4/240   1.7% [ 0.5,  4.2]
+  -- any post-action mention           4/45    8.9% [ 2.5, 21.2]         3/195   1.5% [ 0.3,  4.4]         7/240   2.9% [ 1.2,  5.9]
+     of which page-raised              3/45    6.7% [ 1.4, 18.3]         0/195   0.0% [ 0.0,  1.9]         3/240   1.2% [ 0.3,  3.6]
   -- EVIDENCE-BEARING outcome          1/45    2.2% [ 0.1, 11.8]         3/195   1.5% [ 0.3,  4.4]         4/240   1.7% [ 0.5,  4.2]
   -- silence, record-only read        44/45   97.8% [88.2, 99.9]       192/195  98.5% [95.6, 99.7]       236/240  98.3% [95.8, 99.5]
   (page-raised = the coding's `page_only`: the knowledge base's own note that the releases answer nothing, not a post-action record. The last two lines are the same census read two ways: a reader who counts an unresolved question as silence gets the fourth line.)
@@ -79,7 +79,7 @@ register rows=298  CENSUS=240  cooperative=45  domestic=195
 
 [R7] publisher type as mechanism -- judicial positives and post-action evidence by the publishing body's type (census)
   publisher_type          n                        arrests+                    indictments+                    convictions+                       any-recon
-  le                    169     124/169  73.4% [66.0, 79.9]      44/169  26.0% [19.6, 33.3]       7/169   4.1% [ 1.7,  8.3]       6/169   3.6% [ 1.3,  7.6]
+  le                    169     124/169  73.4% [66.0, 79.9]      44/169  26.0% [19.6, 33.3]       7/169   4.1% [ 1.7,  8.3]       5/169   3.0% [ 1.0,  6.8]
   ministry-regulator     31      10/31   32.3% [16.7, 51.4]       0/31    0.0% [ 0.0, 11.2]       0/31    0.0% [ 0.0, 11.2]       0/31    0.0% [ 0.0, 11.2]
   igo                    17      13/17   76.5% [50.1, 93.2]       1/17    5.9% [ 0.1, 28.7]       0/17    0.0% [ 0.0, 19.5]       1/17    5.9% [ 0.1, 28.7]
   prosecutor             16       8/16   50.0% [24.7, 75.3]      10/16   62.5% [35.4, 84.8]       4/16   25.0% [ 7.3, 52.4]       1/16    6.2% [ 0.2, 30.2]
@@ -100,23 +100,23 @@ register rows=298  CENSUS=240  cooperative=45  domestic=195
   2023                5        15      20                         0                   0
   2024                6        33      39                         0                   0
   2025                6        22      28                         2                   0
-  2026                9        17      26                         1                   0
+  2026                9        17      26                         0                   0
   cohorts (age at the census cutoff):
     2014-2016 (>=9y)     n= 18  any mention   1/18    5.6% [ 0.1, 27.3]   evidence-bearing   1/18    5.6% [ 0.1, 27.3]
     2017-2019 (>=6y)     n= 41  any mention   2/41    4.9% [ 0.6, 16.5]   evidence-bearing   1/41    2.4% [ 0.1, 12.9]
     2020-2022 (>=3y)     n= 68  any mention   2/68    2.9% [ 0.4, 10.2]   evidence-bearing   2/68    2.9% [ 0.4, 10.2]
-    2023-2026 (<3y)      n=113  any mention   3/113   2.7% [ 0.6,  7.6]   evidence-bearing   0/113   0.0% [ 0.0,  3.2]
+    2023-2026 (<3y)      n=113  any mention   2/113   1.8% [ 0.2,  6.2]   evidence-bearing   0/113   0.0% [ 0.0,  3.2]
     (opportunity-at-risk is TIME SINCE PUBLICATION only. It is not an ascertainment measure: no systematic follow-up search was run for any cohort, so a flat gradient bounds right-censoring as an explanation without establishing that a search would have found nothing.)
 
 [R9] declared sensitivity subsets -- the manuscript says the figures 'should be readable' with these rows out; that is a producer's job, not a reader's (codex IC reg3 #25)
   mixed-target sweeps out: n=236 (41 coop / 195 dom) -- rows whose medium was overridden because the illicit-streaming strand is one item in a wider sweep
-    cooperative  domain-seizure   9/41   22.0% [10.6, 37.6]   arrests+  27/41   65.9% [49.4, 79.9]   silence  36/41   87.8% [73.8, 95.9]
+    cooperative  domain-seizure   9/41   22.0% [10.6, 37.6]   arrests+  27/41   65.9% [49.4, 79.9]   silence  37/41   90.2% [76.9, 97.3]
     domestic     domain-seizure   4/195   2.1% [ 0.6,  5.2]   arrests+ 125/195  64.1% [56.9, 70.8]   silence 192/195  98.5% [95.6, 99.7]
-    pooled       domain-seizure  13/236   5.5% [ 3.0,  9.2]   arrests+ 152/236  64.4% [57.9, 70.5]   silence 228/236  96.6% [93.4, 98.5]
-  wiki-field stratum out: n=197 (9 coop / 188 dom) -- rows whose stratum comes from the knowledge base's country list rather than a re-read of the release
-    cooperative  domain-seizure   1/9    11.1% [ 0.3, 48.2]   arrests+   5/9    55.6% [21.2, 86.3]   silence   9/9   100.0% [66.4, 100.0]
+    pooled       domain-seizure  13/236   5.5% [ 3.0,  9.2]   arrests+ 152/236  64.4% [57.9, 70.5]   silence 229/236  97.0% [94.0, 98.8]
+  wiki-field stratum out: n=198 (10 coop / 188 dom) -- rows whose stratum comes from the knowledge base's country list rather than a re-read of the release
+    cooperative  domain-seizure   1/10   10.0% [ 0.3, 44.5]   arrests+   5/10   50.0% [18.7, 81.3]   silence  10/10  100.0% [69.2, 100.0]
     domestic     domain-seizure   4/188   2.1% [ 0.6,  5.4]   arrests+ 120/188  63.8% [56.5, 70.7]   silence 185/188  98.4% [95.4, 99.7]
-    pooled       domain-seizure   5/197   2.5% [ 0.8,  5.8]   arrests+ 125/197  63.5% [56.3, 70.2]   silence 194/197  98.5% [95.6, 99.7]
+    pooled       domain-seizure   5/198   2.5% [ 0.8,  5.8]   arrests+ 125/198  63.1% [56.0, 69.9]   silence 195/198  98.5% [95.6, 99.7]
   page-raised durability as silence: n=240 (45 coop / 195 dom) -- no rows dropped; the durability line is recomputed counting open-question as silence (see R3)
     cooperative  domain-seizure  12/45   26.7% [14.6, 41.9]   arrests+  31/45   68.9% [53.4, 81.8]   silence  44/45   97.8% [88.2, 99.9]
     domestic     domain-seizure   4/195   2.1% [ 0.6,  5.2]   arrests+ 125/195  64.1% [56.9, 70.8]   silence 192/195  98.5% [95.6, 99.7]
@@ -124,11 +124,11 @@ register rows=298  CENSUS=240  cooperative=45  domestic=195
 
 [R6] provenance
   origin x stratum: {('walk-2026-08-17', 'domestic'): 141, ('de', 'domestic'): 47, ('walk-2026-08-17', 'cooperative'): 9, ('ic', 'cooperative'): 36, ('ic', 'domestic'): 7}
-  stratum_basis=wiki-fields: 43 (IC rows; stratum from participating_countries, not a source re-read)
+  stratum_basis=wiki-fields: 42 (IC rows; stratum from participating_countries, not a source re-read)
   publisher_type: {'le': 169, 'ministry-regulator': 31, 'igo': 17, 'prosecutor': 16, 'court': 7}
   text_status: {'full': 240}
   needs_review: 12
-  page_only cells (IC rows): 38 = judicial 12 + modality 22 + reconstitution 4  (rows touched: 14)
+  page_only cells (IC rows): 33 = judicial 11 + modality 19 + reconstitution 3  (rows touched: 13)
   private_named basis: {'none': 157, 'coder': 43, 'wiki-flag': 24, 'keywords': 16} (coder = explicit bool in the row; keywords = whole-word match on orgs_named, hits printed by the build; wiki-flag = IC public_private)
   parents with follow-on cells merged: 10
   merged CELLS whose source publisher type differs from the parent's: 3 (from 12 source releases)

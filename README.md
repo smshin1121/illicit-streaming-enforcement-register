@@ -23,9 +23,9 @@ maintained, so it cannot drift from the register it describes.
 |---|---|
 | `register.json` | the authoritative nested register: every row, every cell, every quotation |
 | `register_rows.csv` | one row per register row, every row-level field (wide form) |
-| `register_cells.csv` | **one row per coded cell** (2629 of them) with its value, its quotation, how that quotation was chosen, and whether it rests on prose rather than a release |
-| `captures.csv` | per row: the URL opened, the fetch method, the text status, and the **SHA-256 of the exact text the cell was coded from** |
-| `texts/` | the 175 release texts that may be redistributed (state and IGO publishers only -- see `NOTICE-texts.md`) |
+| `register_cells.csv` | **one row per coded cell** (2626 of them) with its value, its quotation, how that quotation was chosen, and whether it rests on prose rather than a release |
+| `captures.csv` | per TEXT (a row has a `primary` and, where its cells quote a later release, a `secondary-N`): the URL opened, the fetch method, the text status, and the **SHA-256 of the exact text the cell was coded from** |
+| `texts/` | the 181 release texts that may be redistributed (state and IGO publishers only -- see `NOTICE-texts.md`) |
 | `documents/` | the census predicate and field schema, the coding manual with its full changelog, and the acquisition log |
 | `producers/` | the scripts that gate, build and summarise the register |
 | `register_stats.txt` | the producer output every table in the paper is transcribed from |

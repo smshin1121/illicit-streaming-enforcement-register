@@ -41,6 +41,7 @@ import csv
 import hashlib
 import json
 import pathlib
+import re
 import shutil
 import subprocess
 import sys
@@ -112,6 +113,38 @@ def text_path(row) -> pathlib.Path | None:
     p = REPO / pathlib.PurePath(f.replace("\\", "/"))
     t = p.with_suffix(".txt")
     return t if t.is_file() else None
+
+
+def secondary_texts(row):
+    """The row's SECONDARY release texts, in the same glob `register_check.py` uses.
+
+    A row may quote a second release for a later stage -- CC3-9's cells rest on
+    the guilty-plea release and on the sentencing release -- and the gate accepts
+    a quote found in either. Shipping only the primary made captures.csv's claim
+    ("the exact text the cell was coded from") false for 16 cells in 6 rows: the
+    quote was in bytes the bundle did not contain.
+
+    `.fetch.txt` files are provenance sidecars (URL + fetch log), not documents;
+    they are not shipped as texts, they are read for the secondary's own URL.
+    """
+    f = row.get("_file")
+    if not f:
+        return []
+    jp = REPO / pathlib.PurePath(f.replace("\\", "/"))
+    hits = sorted(set(jp.parent.glob(jp.stem + "_*.txt")) | set(jp.parent.glob(jp.stem + ".twin*.txt")))
+    return [h for h in hits if not h.name.endswith(".fetch.txt")]
+
+
+def secondary_url(path: pathlib.Path) -> str:
+    """URL of a secondary capture, from the `.fetch.txt` sidecar written beside it."""
+    side = path.with_suffix("").with_suffix(".fetch.txt") if path.suffixes[:-1] else None
+    cand = [path.parent / (path.stem + ".fetch.txt"), side]
+    for c in cand:
+        if c and c.is_file():
+            hit = re.search(r"^URL=(\S+)", c.read_text(encoding="utf-8", errors="replace"), re.M)
+            if hit:
+                return hit.group(1)
+    return ""
 
 
 def cells_of(row):
@@ -235,7 +268,7 @@ maintained, so it cannot drift from the register it describes.
 | `register.json` | the authoritative nested register: every row, every cell, every quotation |
 | `register_rows.csv` | one row per register row, every row-level field (wide form) |
 | `register_cells.csv` | **one row per coded cell** ({cells} of them) with its value, its quotation, how that quotation was chosen, and whether it rests on prose rather than a release |
-| `captures.csv` | per row: the URL opened, the fetch method, the text status, and the **SHA-256 of the exact text the cell was coded from** |
+| `captures.csv` | per TEXT (a row has a `primary` and, where its cells quote a later release, a `secondary-N`): the URL opened, the fetch method, the text status, and the **SHA-256 of the exact text the cell was coded from** |
 | `texts/` | the {shipped} release texts that may be redistributed (state and IGO publishers only -- see `NOTICE-texts.md`) |
 | `documents/` | the census predicate and field schema, the coding manual with its full changelog, and the acquisition log |
 | `producers/` | the scripts that gate, build and summarise the register |
@@ -327,28 +360,37 @@ def build(out: pathlib.Path) -> dict:
 
     caps, shipped = [], 0
     for r in rows:
-        tp = text_path(r)
         share = redistributable(r)
-        rec = {
-            "register_id": r["register_id"], "url": r.get("url", ""),
-            "fetch_rung": (r.get("fetch") or {}).get("rung", ""),
-            "text_status": (r.get("fetch") or {}).get("text_status", ""),
-            "words": (r.get("fetch") or {}).get("words", ""),
-            "text_sha256": "", "text_bytes": "", "redistributable": "yes" if share else "no",
-            "path_in_bundle": "", "how_to_obtain": "" if share else "re-fetch the URL; compare its SHA-256",
-        }
-        if tp:
-            b = tp.read_bytes()
-            rec["text_sha256"] = sha256(b)
-            rec["text_bytes"] = len(b)
-            if share:
-                dest = out / "texts" / f"{r['register_id']}.txt"
-                dest.write_bytes(b)
-                rec["path_in_bundle"] = f"texts/{r['register_id']}.txt"
-                shipped += 1
-        caps.append(rec)
+        fetch = r.get("fetch") or {}
+        # one record per TEXT, not per row: a row's cells may be coded from a
+        # secondary release, and shipping only the primary published a hash under
+        # a claim the bundle could not support.
+        wanted = [("primary", text_path(r), r.get("url", ""), fetch.get("rung", ""),
+                   fetch.get("text_status", ""), fetch.get("words", ""))]
+        for i, sp in enumerate(secondary_texts(r), start=1):
+            wanted.append((f"secondary-{i}", sp, secondary_url(sp), "", "", ""))
+        for role, tp, url, rung, status, words in wanted:
+            rec = {
+                "register_id": r["register_id"], "role": role, "url": url,
+                "fetch_rung": rung, "text_status": status, "words": words,
+                "text_sha256": "", "text_bytes": "", "redistributable": "yes" if share else "no",
+                "path_in_bundle": "",
+                "how_to_obtain": "" if share else "re-fetch the URL; compare its SHA-256",
+            }
+            if tp:
+                b = tp.read_bytes()
+                rec["text_sha256"] = sha256(b)
+                rec["text_bytes"] = len(b)
+                if share:
+                    name = (f"{r['register_id']}.txt" if role == "primary"
+                            else f"{r['register_id']}__{tp.stem.split('_', 1)[-1].replace('.', '_')}.txt")
+                    dest = out / "texts" / name
+                    dest.write_bytes(b)
+                    rec["path_in_bundle"] = f"texts/{name}"
+                    shipped += 1
+            caps.append(rec)
     write_csv(out / "captures.csv",
-              ["register_id", "url", "fetch_rung", "text_status", "words", "text_sha256",
+              ["register_id", "role", "url", "fetch_rung", "text_status", "words", "text_sha256",
                "text_bytes", "redistributable", "path_in_bundle", "how_to_obtain"], caps)
 
     # OUR OWN files are copied with line endings normalised to LF; the bytes in
@@ -439,7 +481,7 @@ def write_manifest(info: dict) -> None:
         "| `register.json` | the authoritative nested register: every row, every cell, every quotation |",
         "| `register_rows.csv` | one row per register row, every row-level field (wide form) |",
         "| `register_cells.csv` | **one row per coded cell** with its value, its quotation and how that quotation was chosen (long form) |",
-        "| `captures.csv` | per row: the URL, the fetch method, the text status, and the SHA-256 of the exact text we coded from |",
+        "| `captures.csv` | per text (`role` = primary or secondary-N): the URL, the fetch method, the text status, and the SHA-256 of the exact text we coded from |",
         "| `texts/` | the release texts we may redistribute, named by register id |",
         "| `documents/` | the census predicate and field schema (`REGISTER.md`), the coding manual with its full changelog (`CODING.md`), the acquisition log (`ACQUISITION_LOG.md`) |",
         "| `producers/` | the scripts that gate, build and summarise the register |",

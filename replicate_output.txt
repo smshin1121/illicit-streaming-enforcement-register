@@ -19,8 +19,8 @@ CENSUS=240  cooperative=45  domestic=195
   imprisonments                  2/45    6/195   8/240
 
 [R3] durability
-  not-reported                  40/45  192/195 232/240
-  open-question                  4/45    0/195   4/240
+  not-reported                  41/45  192/195 233/240
+  open-question                  3/45    0/195   3/240
   no-reconstitution-reported     0/45    2/195   2/240
   relaunch-reported              1/45    1/195   2/240
 

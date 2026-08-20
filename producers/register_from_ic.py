@@ -45,6 +45,7 @@ What is mechanical and what is not:
     the paper reports.
 """
 import json
+from collections import Counter
 import re
 import subprocess
 import sys
@@ -121,6 +122,17 @@ def file_as_of(rel: str, day: str) -> str | None:
 
 
 FALLBACKS: list = []  # (rel, day) pairs where no coding-date blob resolved and the working tree was read
+#: citations `line_of()` could not parse. A dropped citation leaves its cell resting on
+#: whatever else it cites, so it is evidence disappearing -- and until 2026-08-20 it
+#: happened without a word. 54 of the 547 coding citations are in this state, every one
+#: of them annotated `(reconstruction)` by a coder marking that the capture is not the
+#: document (OPEN_FINDINGS #59).
+UNPARSEABLE: list = []
+
+
+def annotation_of(cite: str) -> str:
+    """The trailing text that made a citation unparseable, for the shape report."""
+    return re.sub(r"^.*?:[0-9]+[ \t]*", "", cite).strip() or "(no line number)"
 
 
 def line_of(cite: str, as_of: str = "") -> tuple[str, str]:
@@ -130,6 +142,8 @@ def line_of(cite: str, as_of: str = "") -> tuple[str, str]:
     notes and `quote_basis` can say so (codex IC reg2: the fallback was silent)."""
     m = re.match(r"^((?:raw|wiki)/[^:]+):(\d+)$", cite.strip())
     if not m:
+        if cite.strip():
+            UNPARSEABLE.append(cite.strip())
         return "", ""
     rel, n = m.group(1), int(m.group(2))
     p = REPO / rel
@@ -514,6 +528,17 @@ def main() -> int:
         (OUT / f"{slug}.json").write_text(json.dumps(row, ensure_ascii=False, indent=1), encoding="utf-8")
         (OUT / f"{slug}.txt").write_text(text, encoding="utf-8")
         written += 1
+    if UNPARSEABLE:
+        shapes = Counter(annotation_of(c) for c in UNPARSEABLE)
+        print("")
+        print(f"[ATTENTION] {len(UNPARSEABLE)} citation(s) could not be parsed and were DROPPED.")
+        print("            The cell then rests on whatever else it cites, so this is")
+        print("            evidence disappearing, not a formatting nit. Shapes:")
+        for s, n in shapes.most_common(8):
+            print(f"              {n:4d}  ...:<line> {s!r}")
+        print("            The parser is NOT widened on purpose: a (reconstruction)")
+        print("            cite names a capture that is not the document -- honouring")
+        print("            it would quote a digest as a release (OPEN_FINDINGS #59).")
     print(f"wrote {written} IC register rows to {OUT}; HELD (not gated, not built) {held} -> {HELD}  "
           f"(needs_review={review}, cells whose cite gave no quotable line={missing_quote}, "
           f"wiki-page cites resolved at the coding-date blob={hist_lines})")

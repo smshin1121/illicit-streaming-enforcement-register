@@ -194,37 +194,66 @@ below):
   reported **fifteen arrests for eight people**. This is the sharpest instance
   of what an un-run cross-row screen costs: not a spare row, a doubled count.
 
+**Settled 2026-08-20 — `CC4-1` / `CC4-2` are two actions, and the split does not
+move.** This was the only open pair whose merge would have changed the 45/195
+cooperative split, so it was read first. The unit rule's test is whether the two
+releases describe **separately conducted** actions (different dates or units),
+and they do. The Brazilian leg was executed by the Ciberlab with the Polícia
+Civil de Pernambuco and blocked *"309 domínios e 109 IPs"* plus 348 Telegram
+channels; the Argentine leg was executed by ENACOM and NIC Argentina on the
+orders of three named judges in three prosecutions, and reached 14 sites. The
+measures are disjoint, and **neither release reports the other's**: of the other
+eight countries CC4-1 says only *"Nos demais países, houve apreensão de materiais
+esportivos falsificados"*, and CC4-2 never names Brazil. What they share is an
+umbrella — CC4-2 places its measure *"en el marco de la “Operación Tarjeta Roja”,
+una iniciativa multilateral para combatir en conjunto la piratería digital
+durante la Copa del Mundo"*, *"organizada por el Departamento de Justicia de los
+Estados Unidos junto a la Unidad de Cibercrimen de la Fiscalía General de la
+Nación de Colombia"*; CC4-1 calls the operation *"realizada simultaneamente em
+nove países"* under DOJ/HSI coordination. One initiative, two actions. Merging
+them would delete an Argentine judicial instrument from the record.
+
+- ⚠ **The verdict was right and the recorded reason was wrong.** The entry cited
+  the B41/Kratos-2 precedent — *a national action outside a coalition's stated
+  window is its own action* — as the argument **against** merging. It does not
+  apply: CC4-2 (2 July) falls **inside** CC4-1's stated window (*"durante a Copa
+  do Mundo da FIFA 2026"*), so that precedent, read properly, argues **for** the
+  merge. What keeps the rows apart is the unit rule's own separately-conducted
+  test, which nothing in the entry had applied. And the argument recorded on the
+  other side — that CC4-1 lists Argentina among nine participants and names
+  CC4-2's author — establishes one *initiative*, which is not one *action*.
+- ⚠ **Clean at action level; not claimed at domain level.** The adjacent
+  `operation-offsides-world-cup-streaming-piracy-2026` (DOJ, 2026-06-26) seized
+  *"nearly 400 sites"* under an Eastern District of Virginia warrant and does not
+  name Brazil. A US seizure warrant and a Brazilian blocking order are different
+  instruments by different states, so no action is counted twice. Whether any
+  individual domain appears in both cannot be read off the texts, and is not
+  claimed either way.
+
 **Open unit questions — recorded, NOT merged** (each would remove a row; none
 is settled by the two texts alone, and a merge on inference is the failure this
-section exists to prevent):
+section exists to prevent). Four remain; **none of them straddles the
+cooperative/domestic boundary in a way that moves the 45/195 split** — #3 is the
+one that touches both strata, and it would move a row *between* them rather than
+remove a cooperative one:
 
-1. **`CC4-1` (Brazil MJ, Operacao Cartao Vermelho, 2026-07-20) / `CC4-2`
-   (Argentina MPF-UFECI, Operacion Tarjeta Roja, 2026-07-02).** The same
-   US-coordinated multilateral initiative under two names; CC4-1 lists
-   Argentina among nine participants and names CC4-2's author. Against:
-   eighteen days apart, different instruments (14 sites blocked by an Argentine
-   court order vs 309 domains, 109 IPs and 348 Telegram channels on the
-   Brazilian side), and the B41/Kratos-2 precedent holds that a national action
-   outside a coalition's stated window is its own action. ⚠ **Both are
-   cooperative**, so this is the only open pair that would move the 45/195
-   split.
-2. **`B4` (2020-01-09) / `B5` (2020-03-02)** — same investigation start, same
+1. **`B4` (2020-01-09) / `B5` (2020-03-02)** — same investigation start, same
    PayPal trail, same Cordoba-Malaga axis, and B4 closes *"La operacion continua
    abierta a la espera de nuevas detenciones"*. Against: B5 never calls itself a
    second phase, and separate execution dates are separate actions under the
    unit rule (as DTH-2/DTH-3 were held to be).
-3. **`germany-zcb-eg-streams-rosenheim-...-2018` / `DOM-2021-1004`** — ZCB
+2. **`germany-zcb-eg-streams-rosenheim-...-2018` / `DOM-2021-1004`** — ZCB
    Bamberg plus KPI Rosenheim in both, one accused, 27 -> 30, conduct
    *"zwischen 2013 und 2018"* ending in the year of the 2018 search day; the
    2021 release is an indictment, i.e. a later stage. Against: preliminary
    damage EUR 250,000 vs indicted EUR 130,000, and a different foreign leg.
    ⚠ This pair straddles the strata (2018 cooperative, 2021 domestic).
-4. **`DOM-2022-1001` "Gotha" / `DOM-2025-1002` "Gotha 2"** — the 2025 release
+3. **`DOM-2022-1001` "Gotha" / `DOM-2025-1002` "Gotha 2"** — the 2025 release
    calls itself *"il naturale proseguimento dell'indagine 'Gotha' conclusa nel
    2022"* and reuses four headline figures near-verbatim. Against: a separately
    named operation three years later with its own custodial arrests, which the
    unit rule treats as its own action.
-5. **`CC1-4` (2023-11-02) / `CC1-6` (2026-04-30)** — same Stuttgart police
+4. **`CC1-4` (2023-11-02) / `CC1-6` (2026-04-30)** — same Stuttgart police
    press office, both datelined `Stuttgart-Weilimdorf (ots)` (a string that
    appears nowhere else in the corpus), 37 -> 39. Against: the 2026 arrest is on
    entry at Stuttgart Airport with co-perpetrators in three other cities and
@@ -309,20 +338,20 @@ L80 one level above the register: a screen whose population is not its subject.
      the same beIN release, but one walk agent stored the bare slug and the other
      the absolute URL. Comparing the final path segment instead found eighteen.
      L54 said comparing URLs as strings leaks; it leaks in this direction too.
-2. **At least ten of the remainder are second cites.** A mechanical screen paired
+2. **At least eleven of the remainder are second cites.** A mechanical screen paired
    candidates against register rows; four read-only adjudicators read **85 pairs
    over 55 tier-1 candidates** against the register rows' saved release texts, and
    every SAME verdict was then re-verified here with `grep -F`. The producer
-   reports **SAME 13 candidate rows, DISTINCT 71, UNRESOLVED 1**, and the
-   thirteen rows are **10 distinct coalition releases whose action the register
+   reports **SAME 14 candidate rows, DISTINCT 71, UNRESOLVED 0**, and the
+   fourteen rows are **11 distinct coalition releases whose action the register
    already holds under a state release** — the CODA candidates collapse because
    two ids are one article. `python tools/register_screen_queueb.py
    --adjudicated` prints them and re-finds each deciding identifier in the
    register text, so the count falls if a text is re-fetched and the identifier
    goes.
-   - ⚠ **13 is the number READ, not the number known.** `JP-9` is the same
+   - ⚠ **14 is the number READ, not the number known.** `JP-9` is the same
      document as the adjudicated `C10` (`coda-cj.jp/news/751/`) and was never
-     surfaced for reading, so under this round's own URL-identity rule **14
+     surfaced for reading, so under this round's own URL-identity rule **15
      candidate rows are known second cites**. The producer prints that figure
      beside the read one. The document count is the one that means anything;
      the row count is a fact about what the screen surfaced.
@@ -338,13 +367,14 @@ L80 one level above the register: a screen whose population is not its subject.
 | C13 (= JP-12) | DTW-5 | both prosecution venues, CODA credited, damages over NT$1bn |
 | C14 (= JP-13) | DTW-7 | the masked brand, ten suspects, 332 devices |
 | L17 | DTH-1 | `Thaiexpat.tv`, the 11 May 2017 raids, THB 15M |
+| N12 | B39 | *"Als gevolg van de FIOD actie gingen honderdduizenden televisies op zwart"*; `honderdduizenden` and `op zwart` each occur in exactly one register text, this one |
 | P4 | B38 | Groningen, cardsharing, Ziggo, the March-2017 end date |
 
 ⚠ **The two corrections are independent measurements of overlapping sets.**
-4 of the 10 second-cite releases are among the 18 articles that were catalogued
+4 of the 11 second-cite releases are among the 18 articles that were catalogued
 twice (the CODA articles `722`, `728`, `735`, `751`). They compose correctly --
 the first correction is counted in candidate ROWS and the second in DOCUMENTS,
-so at most 304 minus 10 is the right arithmetic and nothing is subtracted
+so at most 304 minus 11 is the right arithmetic and nothing is subtracted
 twice -- but
 "two independent corrections" invites a picture of two disjoint sets, and that
 picture is wrong.
@@ -353,9 +383,9 @@ picture is wrong.
 `paper2/queueb_adjudication.csv` holds one row per pair -- candidate, register
 row, which reader had it, verdict, the identifier that decided a SAME, and the
 screen signal that produced the pair. **The adjudication counts** -- 85 pairs,
-55 candidates, 13 SAME / 71 DISTINCT / 1 UNRESOLVED, and the per-reader split
+55 candidates, 14 SAME / 71 DISTINCT / 0 UNRESOLVED, and the per-reader split
 24/25/20/16 -- are derived from it. ⚠ The queue figures are NOT: 18, 16/2, 304,
-the 14th known row and the overlap of 4 all come from queue B's own URL groups,
+the 15th known row and the overlap of 4 all come from queue B's own URL groups,
 and this paragraph said "every count above" until codex round 4. And
 `tools/register_screen_queueb.py --adjudicated` re-finds each SAME identifier in
 the register text on every run, so a verdict resting on a quotation that has
@@ -433,8 +463,17 @@ that is wrong in a patterned way is worth recording:
   stoplist, and it is simply the right test: an identifier that matches half a
   word has not matched. Applied AFTER the adjudication, so the 55 candidates
   that were read are the pre-fix tier 1; the fix takes tier 1 to 45 for the
-  next round and does not retract anything read here. The 13 SAME verdicts
-  all survive it -- every one was decided by a proper noun.
+  next round and does not retract anything read here. The 14 SAME verdicts
+  all survive it.
+  - ⚠ **The proper-noun generalisation above is false, and the 14th verdict is
+    what falsified it.** This entry read "every one was decided by a proper
+    noun", and listed `nieuws` among the KEYs that decided nothing. `nieuws` is
+    the KEY that surfaced `N12`/`B39`, and that pair settled SAME on 2026-08-20;
+    the identifiers that decided it, `honderdduizenden` and `op zwart`, are
+    ordinary Dutch words. What they are is **rare**: each occurs in exactly one
+    of the 298 register texts. The operative property is document frequency in
+    this corpus, not proper-noun-hood — which is what the screen already
+    measures and what the prose had re-described as a part of speech.
 - **The screen was reading things the register does not code.** Several
   `rows_ic/*.txt` are bundles -- the coded release plus every other raw the wiki
   page cited. For one row the bundle is 98.3% a single IPEC annual report of
@@ -455,10 +494,20 @@ that is wrong in a patterned way is worth recording:
     36, which reads like a finding and is not one: for a wiki-converted row the
     whole cited set *is* the evidence base. The question that bears on the paper
     is narrower -- do census rows quote from a document that is not a state
-    release? Of 76 such cells in 22 bundled census rows: 60 are other **state
-    press releases** (Garda beside Europol, GdF beside Polizia), 12 are the wiki
-    page's own prose and **all 12 are correctly flagged `page_only`**, 2 are a
+    release? Of 76 such cells in 22 bundled census rows: 57 are other **state
+    press releases** (Garda beside Europol, GdF beside Polizia), 11 are the wiki
+    page's own prose and **all 11 are correctly flagged `page_only`**, 4 rest on
+    a **direct capture of the row's own publisher release** appended on
+    2026-08-20 (the Tutto chiaro re-grounding below), 2 are a
     WIPO case study of Operation Casper, and 2 are an AAPA article about it.
+    ⚠ The first three of those numbers read 60 / 12 / — until 2026-08-20: the
+    re-grounding moved three cells off other press releases and one off wiki
+    prose onto the publisher's own release, which is a stronger basis, not a
+    weaker one. The classifier had to be taught the new class in the same
+    commit; until it was, it reported those four cells as resting on **neither**
+    a state release nor a flagged page claim, because an unknown path prefix
+    falls through. `test_census_bundled_evidence.py` case (d) now sabotages that
+    rule and asserts the count moves by exactly four.
     Those last 4 -- the producer counts them; this sentence no longer adds
     2 and 2 -- are the only cells here resting on something that is neither a
     state release nor a flagged page claim, and they are modality quotes on one
@@ -471,13 +520,41 @@ that is wrong in a patterned way is worth recording:
     their own line rather than folded in, because a supporting span is not
     another coded judgement.
 
-**Read but not settled.** `N12` (BREIN, "Hicham O.", 1.3M customers) against
-`B39` (FIOD, four arrests in Almere and Den Helder). The FIOD release names no
-defendant and says "honderdduizenden abonnees", a mild disconfirmation of 1.3M;
-the Europol twin AE4 is equally silent, and AE4's own note already records that
-the candidate table's link to the Hicham O. case "is not in this release and was
-not used". Capturing the BREIN page would settle it; if it settles SAME the floor
-is eleven.
+**Settled 2026-08-20 — SAME, and it is not the kind of SAME the other thirteen
+are.** `N12` (BREIN) against `B39` (FIOD) was the one pair four readers left
+open: the FIOD release names no defendant and says "honderdduizenden abonnees",
+a mild disconfirmation of the candidate's 1.3M, and the Europol twin AE4 is
+equally silent. The BREIN page was captured
+(`https://stichtingbrein.nl/iptv-strafzaak-in-het-nieuws/`, 2026-08-20,
+`fetch_text.py`, 200/203 words) and decides it in one sentence: *"Als gevolg van
+de FIOD actie gingen honderdduizenden televisies op zwart"*. `honderdduizenden`
+and `op zwart` each occur in exactly one of the 298 register texts, B39's, so the
+identifier is not generic. The floor is eleven releases.
+
+⚠ **But N12 announces no enforcement action at all.** It is a news round-up:
+BREIN links the AD's report of the 17 August 2023 hearing that extended the main
+suspect's pre-trial detention, and the 1.3M is the AD's headline figure, not
+BREIN's and not the FIOD's. So it was never a member of "privately announced
+enforcement" to begin with — it is a coalition page *about* a state action, which
+is why the second-cite rule reaches it. **No cell of B39 is coded from it**: the
+census codes state releases, and a detention hearing is not an indictment, so
+`judicial.indictments` stays `pending`. The second cite is recorded in B39's
+`notes` with the URL, as the Europol second cite already was.
+
+⚠ **And a second membership defect, found the other way round.** `A9` (ACE,
+MKVCinemas) sits in queue B carrying the walk's own verdict *"**new** but likely
+out of class (MKVCinemas = download/'drive-to-drive cloning tool', not
+IPTV/streaming)"* and the note *"listed as tier-2-of-class; log only"* — the
+walk's six other logged non-actions were routed OUT and this one was not. It is
+**not deducted here**: "likely out of class" is the walk's hedge, and converting
+a hedged flag into a completed determination is the exact error this section
+exists to record (L82). It is flagged for adjudication.
+
+Both were found by reading, not by screening. A declared-string screen over all
+322 rows — for "out of class", "log only", "non-action", and for titles that
+announce coverage rather than action — returns exactly these two and no third.
+That measures the screen, not the queue: most rows carry terse notes, and 267 of
+them are unread.
 
 **Three things found on the way that are not about queue B.**
 
@@ -502,7 +579,8 @@ is eleven.
 empty or small. It says the number quoted for it counted documents twice and
 counted second cites as members, that the corrected document count is at most
 304, that
-at least ten of those are second cites, and that the remainder is unread. The
+at least eleven of those are second cites, that at least two of its rows are not
+held-back enforcement at all, and that the remainder is unread. The
 sensitivity stratum the design calls for still has to be coded before anything
 can be said about what it would do to the figures.
 
@@ -766,7 +844,7 @@ reversal. Census **247 → 245** (200 domestic / 45 cooperative).
   `history/2026-08-17.md` (memory dir); its regexes are the definition of that
   number (L69) and it is loose in both directions (misses "bloqueo de cuentas",
   flags true seizures).
-- **`stratum_basis: wiki-fields`** (43 census rows from the IC repository):
+- **`stratum_basis: wiki-fields`** (42 census rows from the IC repository):
   stratum from `participating_countries`, not a source re-read. Two sampled
   rows had a state the release names but the wiki field lacked (Mobdro:
   Andorra — wiki fixed; Perfect Storm 2020: Malta — NOT added, and the reading
