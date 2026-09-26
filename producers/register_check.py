@@ -1,4 +1,4 @@
-"""register_check.py -- gate for coded register rows (paper2/REGISTER.md).
+"""register_check.py -- gate for coded register rows (track2-ic-de/REGISTER.md).
 
     python tools/register_check.py <dir> [<dir> ...] [--refetch N] [--verbose]
 
@@ -38,7 +38,13 @@ For every `<id>.json` in the given directories (each expected beside an
            with tools/fetch_text.py and their quotes re-checked against the
            fresh text -- guards against a coder editing the .txt to fit. Off
            by default (network); a run without --refetch has verified quotes
-           against the coder's SAVED text only.
+           against the coder's SAVED text only. ⚠ It fetches the row's `url`
+           only, while QUOTES accepts a span found in a secondary text too, so
+           a row whose cells quote a later release reports those quotes as
+           absent from an unchanged page -- six of the seven rows with
+           secondary texts, simulated 2026-09-23 with the saved primary as the
+           fresh fetch (sol R4 #2). Read a REFETCH miss on such a row against
+           its `<id>_N.txt` before calling it drift.
 
 Per-row only. Cross-row properties (URL collisions, coder `dup` verdicts,
 follow-on merging, the census predicate incl. publisher_tier == 1) live in
@@ -67,7 +73,26 @@ MEDIA = {"iptv-service", "streaming-site", "cardsharing", "isd-retail", "live-sp
 MODALITY = {"domain-seizure", "hosting-takedown", "blocking-order", "content-delisting", "payment-disruption",
             "intermediary-process", "asset-seizure", "arrest-search", "end-user-action", "voluntary-transfer"}
 JUD_VALUES = {"yes-uncounted", "none-stated", "not-reported", "pending"}
-RECON = {"successor-named", "relaunch-reported", "no-reconstitution-reported", "open-question", "not-reported"}
+#: ⚠ THE definition. `register_stats.py`, `paper2_coding_merge.py` and
+#: `check_campaign_rows.py` each kept their own copy until 2026-09-21, when
+#: a value added here left two of them silently wrong and one loudly wrong
+#: (cross-check R7 #2, #3). They import these now.
+#: `target-persisted` is NOT here: withdrawn 2026-08-13, re-added and
+#: withdrawn again 2026-09-21 when the row it was re-added for turned out
+#: to rest on a record about the target's NETWORK. See CODING.md Column 3.
+EVIDENCE_BEARING = ("successor-named", "relaunch-reported",
+                    "no-reconstitution-reported")
+RECON = set(EVIDENCE_BEARING) | {"open-question", "not-reported"}
+# followup_search (2026-09-18). `reconstitution` records what the TARGET did after
+# the action; this records what WE did about looking for it. They were one value
+# until now, so "nobody searched" and "searched and found nothing" both arrived as
+# `not-reported`. DRAFT.md s.6 already states at PAPER level that no systematic
+# per-target search across publishers was run -- this makes the statement per row,
+# so a search that IS run has somewhere to land and a rule can require it to say
+# when and where. Adding it moves no figure: every existing row defaults to
+# `no-search-recorded`, which is what s.6 already says.
+FOLLOWUP = {"record-found", "searched-none-found", "searched-access-denied",
+            "no-search-recorded"}
 STAGES = ("arrests", "indictments", "convictions", "imprisonments")
 TEXT_STATUS = {"full", "partial", "shell"}
 DATE_BASIS = {"dateline", "page-metadata", "url", "lower-bound"}
@@ -75,6 +100,29 @@ DEDUP_VERDICTS = {"new", "dup", "possible-dup", "held-ic", "held-de"}
 ORIGIN = re.compile(r"^(ic|de|walk-\d{4}-\d{2}-\d{2})$")
 ACTION_DATE = re.compile(r"^\d{4}-\d{2}(-\d{2})?$")
 DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+
+def calendar_ok(d) -> bool:
+    """Does `d` name a day that exists? SHAPE is a separate question.
+
+    `ACTION_DATE` and `DATE` match the shape only, so `2025-13` and
+    `2023-02-29` pass them. The campaign lane has paired its regex with a
+    calendar test since codex R2 #5; this lane never did, and the `as_of`
+    rule added on 2026-09-21 inherited the hole the hour it was written
+    (found by firing that rule through `register_build.load_rows`, the
+    only path that builds this register -- L98).
+
+    A `YYYY-MM` value is tested at its first day. Callers run the shape
+    test first, which is what keeps the compact `20251001` that
+    `dt.date.fromisoformat` accepts on 3.11+ out of both lanes.
+    """
+    if not isinstance(d, str):
+        return False
+    try:
+        dt.date.fromisoformat(d if len(d) != 7 else d + "-01")
+    except ValueError:
+        return False
+    return True
 REQUIRED = ["origin", "origin_ref", "publisher", "publisher_type", "publisher_tier", "url", "fetch",
             "publish_date", "title_original", "countries_named", "countries_executing", "orgs_named",
             "stratum", "medium", "in_scope", "unit", "modality", "judicial", "reconstitution",
@@ -87,6 +135,38 @@ def norm(s: str) -> str:
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from fetch_text import text_size  # noqa: E402  -- ONE definition of the size measure (L69)
+
+
+#: Distinguishes "the key is absent" from "the key is present and null".
+_ABSENT = object()
+
+
+def followup_cell(r: dict):
+    """This row's follow-up-search cell, defaulted -- ONLY when the key is absent.
+
+    ONE definition, imported by `register_build.normalize`, because a default the
+    gate and the producer each invent is a default that drifts (R25's shared
+    predicate, inverted: here sharing is what makes them agree).
+
+    An absent key yields `no-search-recorded`, and the value is named for what is
+    actually true: **no search is recorded for this row**. It is not a claim that
+    nobody looked -- a coder may have looked and written nothing down, and L78
+    forbids reading an empty field as a fact about the world.
+
+    ⚠ It does NOT default a key that is present and the wrong shape; it hands the
+    value back unchanged so `check_row` can reject it, and so the return type is
+    "a mapping, or whatever the coder wrote". The version that defaulted
+    everything non-mapping made the 2026-09-19 raw-shape check unreachable in the
+    only path that matters: `register_build.load_rows` normalises and THEN
+    checks, so `"followup_search": null` was already the default by the time the
+    rule looked, and the rule only ever fired for the firing test, which calls
+    `check_row` directly (cross-check R2 #1). A guard that the production path
+    walks around is not a guard.
+    """
+    cell = r.get("followup_search", _ABSENT)
+    if cell is _ABSENT:
+        return {"status": "no-search-recorded"}
+    return dict(cell) if isinstance(cell, dict) else cell
 
 
 def jud_ok(v: str) -> bool:
@@ -150,8 +230,15 @@ def check_row(jp: Path, refetch: bool = False, row: dict | None = None) -> list[
     if not (isinstance(r["origin"], str) and ORIGIN.match(r["origin"])):
         errs.append(f"SCHEMA origin {r['origin']!r} (ic | de | walk-YYYY-MM-DD)")
     ad = r.get("action_date")
-    if not (ad is None or (isinstance(ad, str) and ACTION_DATE.match(ad))):
+    if ad is None:
+        pass
+    elif not (isinstance(ad, str) and ACTION_DATE.match(ad)):
         errs.append(f"SCHEMA action_date {ad!r} (null, YYYY-MM-DD or YYYY-MM)")
+    elif not calendar_ok(ad):
+        # the same two messages, in the same order, as the campaign lane's
+        # copy of this rule (`check_campaign_rows.py`, codex R2 #5) -- that
+        # lane had the calendar test and this one did not
+        errs.append(f"SCHEMA action_date {ad!r} is not a real calendar date")
     if not isinstance(r["title_original"], str):
         errs.append("SCHEMA title_original must be a string")
     if isinstance(r["fetch"], dict):
@@ -268,8 +355,74 @@ def check_row(jp: Path, refetch: bool = False, row: dict | None = None) -> list[
         elif not q_ok(q):
             errs.append(f"QUOTES reconstitution quote not found verbatim: {q[:60]!r}")
         extra_quotes(rec, "reconstitution")
-        if v in ("successor-named", "relaunch-reported", "no-reconstitution-reported") and not rec.get("as_of"):
+        if v in EVIDENCE_BEARING and not rec.get("as_of"):
             errs.append(f"CELLS reconstitution={v} without as_of")
+    # ⚠ The paper2 lane had NO format rule for as_of -- "banana" passed -- while
+    # the campaign lane demanded a full DAY, which `register/SCHEMA.md` denies:
+    # the field is `YYYY-MM-DD or YYYY-MM or null` (R7 #3). The first version
+    # of this rule stopped at ACTION_DATE and let `2025-13` through, which is
+    # what `tools/test_register_dates.py` fires at.
+    ao = rec.get("as_of")
+    if ao in (None, ""):
+        pass
+    elif not (isinstance(ao, str) and ACTION_DATE.match(ao)):
+        errs.append(f"CELLS reconstitution.as_of {str(ao)[:40]!r} is not "
+                    f"YYYY-MM-DD or YYYY-MM")
+    elif not calendar_ok(ao):
+        errs.append(f"CELLS reconstitution.as_of {ao!r} is not a real "
+                    f"calendar date")
+    # FOLLOWUP -- the cell records a search we ran, so the three searched values
+    # must say WHEN and WHERE, and the default must not be allowed to carry a
+    # search record (recording a search and then calling the row unsearched is
+    # the failure this rule exists to make impossible).
+    # ⚠ The shape is checked BEFORE defaulting. `followup_cell` returns the
+    # default for anything that is not a mapping, which is what the builder
+    # needs, but a row carrying `"followup_search": "searched-none-found"` --
+    # the value written where the cell belongs -- would then be read as
+    # UNSEARCHED and the coder's statement would vanish. Found by the rule's own
+    # firing test, on the first run (L64: the silent fallback).
+    # ⚠ The absent key and an explicit `null` are different things, and reading
+    # them as one was a hole: `"followup_search": null` took the default in
+    # silence, so a coder who wrote the key and emptied it got the same result
+    # as one who never wrote it, and the test could not even express the case
+    # because `None` was its sentinel for "do not set the key" (cross-check
+    # 2026-09-19). A sentinel distinguishes them here.
+    # ⚠ Every rule below is nested under the shape it needs, because the flat
+    # version read a wrong-typed value before it had established the type:
+    # `scope: 3` reached `.strip()` and raised AttributeError -- a traceback, not
+    # a rule -- while `scope: []` went to "" and was accepted by a default that
+    # is supposed to carry NO scope at all (cross-check R2 #2).
+    # ⚠ And the default's rule now asks whether the KEY IS PRESENT, not whether
+    # its value is truthy. `"scope": ""` is a coder writing an empty scope, which
+    # is a different act from not writing one, and truthiness erased it.
+    raw = r.get("followup_search", _ABSENT)
+    if raw is not _ABSENT and not isinstance(raw, dict):
+        errs.append(f"SCHEMA followup_search must be a mapping, got {type(raw).__name__}")
+    else:
+        fs = followup_cell(r)
+        fstatus = fs.get("status")
+        if fstatus not in FOLLOWUP:
+            errs.append(f"SCHEMA followup_search.status {fstatus!r}")
+        else:
+            typed = True
+            for k in ("searched_on", "scope"):
+                if k in fs and not isinstance(fs[k], str):
+                    errs.append(f"SCHEMA followup_search.{k} must be a string, "
+                                f"got {type(fs[k]).__name__}")
+                    typed = False
+            if not typed:
+                pass  # the value rules cannot speak about a value of the wrong type
+            elif fstatus == "no-search-recorded":
+                carried = [k for k in ("searched_on", "scope") if k in fs]
+                if carried:
+                    errs.append("CELLS followup_search=no-search-recorded carries a "
+                                f"search record ({', '.join(carried)})")
+            else:
+                if not DATE.match(fs.get("searched_on", "")):
+                    errs.append(f"CELLS followup_search={fstatus} without a searched_on date")
+                if not fs.get("scope", "").strip():
+                    errs.append(f"CELLS followup_search={fstatus} without a scope")
+
     mq = r["modality_quotes"]
     if r["modality"] and not mq:
         errs.append("CELLS modality coded but modality_quotes empty")

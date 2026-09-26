@@ -6,6 +6,10 @@ illicit IPTV / streaming infrastructure, one row per action, each row coded
 directly from a tier-1 release found by the publisher-index walk
 (`ACQUISITION_LOG.md`) or already held by either repository. Wiki pages remain
 the deep records; the register is the data product the paper analyses.
+⚠ As built, the rows converted from the knowledge base (`rows_ic`) are coded
+from its per-cell records rather than directly from one release: their saved
+text joins every capture the wiki page cited, press included, and some cells
+rest on the page's own prose (`page_only`) — DRAFT.md §3.3 (sol R6 #2).
 
 ## Census predicate
 
@@ -48,6 +52,18 @@ A row is in the **census** when all of these hold:
    wiki census, not a design choice; the register holds 18 census rows dated
    2014–2016 (2014: 6, 2015: 3, 2016: 9 — `register_build.py` prints the
    by-year table) and the manuscript reframe must state the window it uses.
+
+   ⚠ **Reaffirmed 2026-09-18 (user decision 3), and the reason has changed.**
+   In August the constant was fixed so the population would stop moving when a
+   row was appended. Since then the daily collector has kept running and the
+   professor's review opened an expansion, so the pressure is now the opposite
+   one — to extend the window because new material exists. It stays fixed. Two
+   things are frozen for a quoted figure, not one: this **window**, which decides
+   what is eligible, and the **commit**, which decides what was read (`README.md`
+   refuses a figure from a `+dirty` run for the second reason). Collection does
+   not stop; the paper does not follow it. Moving the window is a new version of
+   the paper with its own frozen pair — not an update to this one — and
+   `DESIGN.md`'s 2026-09-18 table records the decision with what it costs.
 
 **Unit rule (aggregation).** One release announcing one operation by one unit
 against several persons is ONE action even where separate case files result
@@ -131,7 +147,8 @@ request or joint action does.
 | `modality` | list | the ten codes of `CODING.md` Column 1, from the release's verbs |
 | `judicial` | `{arrests, indictments, convictions, imprisonments}` each `{value, quote}` | values per `CODING.md` Column 2: `n=<int>` / `yes-uncounted` / `none-stated` / `not-reported` / `pending`; natural persons |
 | `reconstitution` | `{value, as_of, quote}` | per `CODING.md` Column 3 |
-| (quotes) | per cell | **every non-null coded cell carries a character-exact span that `grep -F` finds in the saved text**: `judicial.<stage>.quote` (+ optional `quotes: [...]` with every supporting span, each verified), `reconstitution.quote`, `modality_quotes[]`. `tools/register_check.py` verifies against the coder's SAVED `<id>.txt` (and `<id>_*.txt` / `<id>.twin*.txt` secondaries); a live re-fetch happens only for the `--refetch N` sample. There is no top-level `quotes` field (this row said there was, codex IC reg1) |
+| `followup_search` | `{status, searched_on?, scope?}` | per `CODING.md` Column 4 (added 2026-09-18). Records what WE did about looking, which `reconstitution` does not: it answers what the TARGET did, so "nobody searched" and "searched and found nothing" were one value until this field existed. Defaulted to `no-search-recorded` by `register_check.followup_cell`, which `register_build.normalize` imports rather than re-implements; every row carried that default on the day it was added, which is what DRAFT.md §6 already said in prose |
+| (quotes) | per cell | **every judicial and reconstitution cell whose value is not `not-reported` carries a character-exact span that `grep -F` finds in the saved text** (`judicial.<stage>.quote`, + optional `quotes: [...]` with every supporting span, each verified; `reconstitution.quote`), and a `not-reported` cell carries none. Modality is backed per ROW: a row with any modality code carries at least one span in `modality_quotes[]`, which maps no span to a code. ⚠ Until 2026-09-26 this cell said "every non-null coded cell", which the modality rule never enforced (sol R6 #6). `tools/register_check.py` verifies against the coder's SAVED `<id>.txt` (and `<id>_*.txt` / `<id>.twin*.txt` secondaries); a live re-fetch happens only for the `--refetch N` sample. There is no top-level `quotes` field (this row said there was, codex IC reg1) |
 | `dedup` | `{verdict, matches[]}` | against IC slugs, DE ids, other register rows |
 | `coalition_only` | bool | true when no state-actor release for the action is known. ⚠ **Determined by the coder only for walk rows.** `register_from_ic.py` writes `False` unconditionally for wiki-converted rows, so on those it records "nobody asked", not "a state release is known" — an absence inherited rather than established (L78). Inert for every count as it stands: all 13 coalition-published `rows_ic` rows fail the census predicate on `publisher_type` before this flag is read, and the build reports them under that reason (`publisher_type=coalition`, 13) separately from the 6 it excludes as `coalition-only`. Do not read the `False` as evidence |
 | `notes` | string | |
@@ -609,8 +626,10 @@ artifact:
 Verified from a fresh clone of the public repository, not from the build
 directory: **175/175 shipped texts re-hash to their published SHA-256**,
 **23/23 manifest-listed files match**, and the bundle's own `replicate.py`
-recomputes the tables from the CSVs alone with 20 quantities checked and 0
-disagreeing.
+recomputed its 20 headline quantities from the CSVs alone, 0 disagreeing. (This
+line said it "recomputes the tables"; it checks the census and strata sizes and
+the pooled R1/R2a/R3 counts, not the tables -- sol R4 #1, found here by
+`check_retracted_claims.py` on 2026-09-26.)
 
 Also fixed on the way: `register.json` recorded `built_from` as absolute local
 paths, putting one machine's username and directory layout into a file that is
@@ -705,36 +724,64 @@ would make that value near-automatic wherever `indictments` is positive.
 The repository this register lives in is **private** and stays private: `raw/`
 holds commercial press fulltext held under research use. So the replication
 material is a separate artifact, built by `python tools/register_release.py`
-and described by `paper2/RELEASE-MANIFEST.md`, whose hashes
-`register_release.py --check` re-verifies against a fresh build (a manifest
-nobody checks is a set of hashes that rot quietly -- R63-R73).
+and described by `track2-ic-de/RELEASE-MANIFEST.md`, which
+`register_release.py --check` compares, line by line, with what a fresh build
+renders (a manifest nobody checks is a set of hashes that rot quietly -- R63-R73).
 
 What the bundle fixes, measured before it was built:
 
 - `register.csv` carried 28 columns and **not the quotations**. A reader could
-  recompute every table in the paper and audit not one cell. The bundle emits
-  `register_cells.csv` -- **one row per coded cell**, with its value, its
-  quotation, how the quotation was chosen, and whether it rests on wiki prose.
+  recompute the register tables and audit not one cell. The bundle emits
+  `register_cells.csv` -- one record per coded value, with the quotation
+  behind it where the record states one, how the quotation was chosen, and
+  whether it rests on wiki prose, plus each row's modality evidence spans as
+  records of their own (a modality code has no quotation of its own; a
+  `not-reported` value has none by rule).
 - `rows_ic/*.txt` and `rows_de/*.txt` are gitignored, being copies of `raw/`
   captures, so **90 of the 240 census rows had no shareable text at all**. The
   bundle ships the texts it may ship (150 census rows) and, for every row
-  without one, the URL **and the SHA-256 of the bytes we coded from** -- so a
-  replicator can fetch the publisher's copy and prove it is the same document,
-  or prove it is not.
+  without one, the URL **and the SHA-256 of the bytes we coded from**. ⚠ This
+  item went on to say that a replicator could therefore "fetch the publisher's
+  copy and prove it is the same document, or prove it is not". A fetch does not
+  reproduce that hash: every saved text is our extraction of a page, and most
+  withheld texts also begin with a capture header this project wrote, so for
+  those a mismatch was the only possible result, and for the rest a match
+  needed our extraction reproduced byte for byte (2026-09-23, `OPEN_FINDINGS.md` #94;
+  counts: `python tools/register_release.py --check`). The hash identifies our
+  saved text; the check a replicator can run without it is a search for each
+  cell's quotation, which may be in the row's release, a later release, one of
+  the captures a saved text joins (their URLs in `joined_captures.csv` since
+  2026-09-25), another row named in `from_follow_on`, or -- for a `page_only`
+  cell -- the wiki page's prose, which no publisher's page need contain.
+  `captures.csv` says per text which ones carry our header (`our_header`) or
+  join several captures (`captures_joined`). ⚠ The 2026-09-23 version of this
+  item said that "a quotation may come from any of them, and none is mapped to
+  its text"; joined captures had no published URL, `from_follow_on` does name the
+  source row, and a `page_only` quotation need not be on any publisher's page (sol R5 #6,
+  #8).
 - No single place stated the command sequence that reproduces the figures. The
-  manifest does, with a hash for every emitted file.
+  manifest does, with a hash for every emitted file. ⚠ Until 2026-09-23 two of
+  the three commands it stated could not run in the bundle and the third exited
+  1 there (#94). The manifest and README now print only the two commands the
+  bundle can run, and every build runs them inside itself and fails unless the
+  producer prints `register_stats.txt` byte for byte.
 
 The pipeline is deterministic: no clock, no seed, no network. `--verify` builds
-the bundle twice and asserts the two builds agree file by file. ⚠ A hash proves
-two people read the same bytes; it does not prove the publisher still serves
-them. The live check is `register_check.py --refetch N`, which re-fetches a
-deterministic sample and re-greps every quotation against what the page says
-today. It needs the network and is not run by the gates.
+the bundle twice and asserts the two builds agree file by file and (since
+2026-09-25, sol R5 #9) render the same manifest, build stamp aside -- the
+manifest is copied in after the files are hashed. The live check
+is `register_check.py --refetch N`, which re-fetches a deterministic sample and
+re-greps every quotation against what the page says today. It runs in this
+repository, on the per-row files, not in the bundle; it needs the network and
+is not run by the gates. ⚠ It fetches each row's PRIMARY URL only, so a row
+whose cells quote a later release reports those quotations as missing even
+from an unchanged page (2026-09-23, sol R4 #2: six of the seven rows with
+secondary texts, simulated with the saved primary as the fresh fetch).
 
 ## Provenance chain
 
-candidate row (agent walk, `acquisition/`) → coded row (agent, one JSON +
-one TXT per row under `register/rows_walk/`, `rows_de/`; IC rows converted by
+candidate row (agent walk, `../paper2/acquisition/`) → coded row (agent, one
+JSON + one TXT per row under `../paper2/register/rows_walk/`, `rows_de/`; IC rows converted by
 `register_from_ic.py` into `rows_ic/`, undatable ones into `rows_ic/held/`) →
 `register_check.py` (PER ROW: schema with strict types, enums, quote-grep
 against the saved text, cells, stratum-vs-record on distinct state slugs,
@@ -742,7 +789,9 @@ shell/size floor, dates; `--refetch N` re-fetches a deterministic sample) →
 `register_build.py` (CROSS-ROW: `dup` verdicts in either load order, URL
 collisions between independent rows, follow-on merge, census predicate incl.
 tier 1 and no `possible-dup`, register ids; emits `register.csv/json`, prints
-census counts, every exclusion, shells, held rows and the private-keyword hits)
+census counts, each gate-rejected row by name, the census exclusions as a count
+per reason (each excluded row records its reason), shells, held rows and the
+private-keyword hits)
 → `register_stats.py` (R1–R9 from `register.json`; R2a prevalence, R2b
 co-occurrence with the previous stage, R7 publisher type, R8 year and cohort,
 R9 the declared sensitivity subsets). Fire-tested: `test_register_check.py`
@@ -810,7 +859,11 @@ reversal. Census **247 → 245** (200 domestic / 45 cooperative).
   domain totals are operation-wide and not attributable to the medium
   (`medium` now `hybrid` / `isd-retail` with the evidence in `scope_reason`,
   `medium_basis: override`). Any per-row count from them overstates IPTV
-  enforcement; the statistics should be readable with the three excluded.
+  enforcement; the statistics should be readable with those excluded. ⚠ The
+  producer excludes FOUR: `brazil-mjsp-operacao-404-fase-2-2020` carries the
+  same `medium_basis: override` and is a piracy sweep rather than a
+  counterfeit one, so naming three here understated the excluded set
+  (`mixed-target sweeps out: n=236`).
 - **IC row fields the converter cannot fill from the dataset**: `orgs_named`
   are placeholders (`(wiki participating_agencies #N)`), `countries_named` =
   `countries_executing`, `action_date` is null (the wiki carries the
@@ -868,7 +921,7 @@ reversal. Census **247 → 245** (200 domestic / 45 cooperative).
   converter read the flag on modality and reconstitution cells and discarded
   it, so 22 modality cells and 4 durability cells arrived in the register
   indistinguishable from cells quoted out of a release, and CODING.md's promise
-  that "the statistics report the split" could not be kept. All four cooperative
+  that "the statistics report the split" could not be kept. All three cooperative
   `open-question` cells are page-raised; [R3] now prints the split and a
   record-only reading of the durability column (codex IC reg3 #1/#2).
 - **The coder's notes were truncated to 400 characters** on conversion, and the

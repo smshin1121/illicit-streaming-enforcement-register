@@ -3,9 +3,16 @@
 Builds ONE valid row in a temp dir (JSON + TXT), asserts the checker passes it,
 then applies one sabotage at a time to a fresh copy and asserts the checker
 reports EXACTLY the expected failure class for that rule and nothing else.
+
+`vocab_case()` fires the other half of what this module owns: the
+reconstitution vocabulary, which its consumer `register_stats.py` must FOLLOW
+rather than restate (astra R2 #3, #4).
 """
+import ast
 import json
+import re
 import shutil
+import subprocess
 import sys
 import tempfile
 from pathlib import Path
@@ -163,6 +170,116 @@ def cli_case() -> list[str]:
     return problems
 
 
+def _stats_sections(out: str):
+    """(R3 evidence, R3 record-only silence, R8 year-table evidence, R8 cohort
+    evidence, R9 page-raised pooled silence), each a pooled count or None."""
+    lines = out.splitlines()
+
+    def pooled(prefix):
+        ln = next((x for x in lines if x.startswith(prefix)), None)
+        fr = re.findall(r"(\d+)/(\d+)", ln or "")
+        return int(fr[-1][0]) if fr else None   # the last column is pooled
+    years = cohorts = r9 = None
+    i = next((k for k, x in enumerate(lines) if x.startswith("[R8]")), None)
+    if i is not None:
+        years = cohorts = 0
+        for x in lines[i + 1:]:
+            if x.startswith("[R9]"):
+                break
+            m = re.match(r"^\s+\d{4}\s+\d+\s+\d+\s+\d+\s+\d+\s+(\d+)\s*$", x)
+            if m:
+                years += int(m.group(1))
+                continue
+            m = re.search(r"evidence-bearing\s+(\d+)/\d+", x)
+            if m:
+                cohorts += int(m.group(1))
+    j = next((k for k, x in enumerate(lines) if "page-raised durability as silence:" in x), None)
+    if j is not None:
+        for x in lines[j + 1:j + 4]:
+            m = re.search(r"^\s+pooled\s.*silence\s+(\d+)/\d+", x)
+            if m:
+                r9 = int(m.group(1))
+    return (pooled("  -- EVIDENCE-BEARING outcome"), pooled("  -- silence, record-only read"),
+            years, cohorts, r9)
+
+
+def vocab_case() -> list[str]:
+    """The vocabulary this module owns is FOLLOWED by register_stats.py.
+
+    (a) The drift guard fires under `python -O` as well as without it. It was an
+        `assert`; -O strips those, so an optimised run with a drifted vocabulary
+        printed every table and exited 0 (astra R2 #3).
+    (b) register_stats.py holds no collection literal -- tuple, list, set, or
+        dict keys -- of two or more vocabulary values except its ordered RECON
+        tuple, which (a) guards. Three such literals survived a repair that
+        said the vocabulary had one owner, and the grep that checked them used
+        one quote style and returned 0 -- the AST sees every spelling (astra R2
+        #4). Dict keys were added when sol R3 spelled the complement as
+        `{"not-reported": 1, "open-question": 1}` and (b) did not see it.
+    (c) With `relaunch-reported` taken out of EVIDENCE_BEARING in a child
+        interpreter, every section that counts evidence moves with R3: R8's
+        year table, its cohorts, and R9's page-raised silence. (b) cannot see a
+        complement written as two comparisons; this can. It runs in both
+        layouts -- register_stats finds the register beside `tools/` or beside
+        a bundle's `producers/` -- and a missing register FAILS in either.
+        Until 2026-09-23 a bundle had no register where register_stats looked,
+        so (c) printed that it had not run and the case passed (#94).
+    Children, because -O is a process flag and the vocabulary is bound at import.
+    """
+    problems = []
+    here = Path(__file__).resolve().parent
+    stats = here / "register_stats.py"
+    head = f"import sys; sys.path.insert(0, {str(here)!r}); import register_check as g; "
+
+    def child(flags, body):
+        return subprocess.run([sys.executable, *flags, "-c", head + body], capture_output=True,
+                              text=True, encoding="utf-8", errors="replace")
+
+    for flags in ([], ["-O"]):
+        p = child(flags, "g.RECON.add('probe-value'); import register_stats")
+        if p.returncode == 0 or "drifted from the gate" not in p.stderr:
+            problems.append(f"(a) drift guard under {' '.join(flags) or 'plain'} python did not fire: "
+                            f"rc={p.returncode}, stderr {p.stderr.strip()[-100:]!r}")
+
+    vocab = set(G.RECON)
+    tree = ast.parse(stats.read_text(encoding="utf-8"))
+    guarded = {id(n.value) for n in ast.walk(tree) if isinstance(n, ast.Assign)
+               and any(getattr(t, "id", "") == "RECON" for t in n.targets)}
+    def members(n):   # dict KEYS too: sol R3 spelled the complement as a dict
+        elts = n.keys if isinstance(n, ast.Dict) else n.elts
+        return [e.value for e in elts if isinstance(e, ast.Constant)
+                and isinstance(e.value, str) and e.value in vocab]
+    restated = [f"line {n.lineno} {vals}" for n in ast.walk(tree)
+                if isinstance(n, (ast.Tuple, ast.List, ast.Set, ast.Dict)) and id(n) not in guarded
+                for vals in [members(n)] if len(vals) >= 2]
+    if restated:
+        problems.append("(b) register_stats.py restates the vocabulary: " + "; ".join(restated))
+
+    sys.path.insert(0, str(here))
+    import register_stats as S  # noqa: E402  -- only for REG, where it will look
+    if S.REG is None or not S.REG.is_file():
+        problems.append(f"(c) no register where register_stats looks from `{here.name}/`: {S.REG}")
+        return problems
+    runs = {}
+    for label, cut in (("as is", ""), ("relaunch-reported out", "g.EVIDENCE_BEARING = tuple("
+                       "v for v in g.EVIDENCE_BEARING if v != 'relaunch-reported'); ")):
+        p = child([], cut + "import register_stats as s; sys.exit(s.main())")
+        secs = _stats_sections(p.stdout)
+        runs[label] = secs
+        if p.returncode != 0 or None in secs:
+            problems.append(f"(c) {label}: rc={p.returncode}, sections {secs}")
+            continue
+        ev, sil, years, cohorts, r9 = secs
+        if not (years == cohorts == ev and r9 == sil):
+            problems.append(f"(c) {label}: R3 says {ev} evidence / {sil} silent, but R8 years={years}, "
+                            f"R8 cohorts={cohorts}, R9 page-raised silence={r9}")
+    a, b = runs.get("as is"), runs.get("relaunch-reported out")
+    if a and b and None not in a and None not in b and not b[0] < a[0]:
+        problems.append("(c) premise: taking relaunch-reported out moved nothing in R3 -- the census "
+                        "no longer holds that value; choose another to cut")
+    return problems
+
+
 def main() -> int:
     bad = 0
     for name, row, text, expect, n_expected in CASES:
@@ -181,7 +298,12 @@ def main() -> int:
         print(f"[FAIL] CLI: {p}")
     print(f"[{'ok' if not cli else 'FAIL'}] {'CLI file selection + exit codes':<34} -> {len(cli)} problems")
     bad += len(cli)
-    print(f"\n{len(CASES)} row cases + 1 CLI case, {bad} unexpected")
+    vocab = vocab_case()
+    for p in vocab:
+        print(f"[FAIL] vocabulary: {p}")
+    print(f"[{'ok' if not vocab else 'FAIL'}] {'vocabulary followed, not restated':<34} -> {len(vocab)} problems")
+    bad += len(vocab)
+    print(f"\n{len(CASES)} row cases + 1 CLI case + 1 vocabulary case, {bad} unexpected")
     return 1 if bad else 0
 
 

@@ -1,4 +1,4 @@
-"""register_build.py -- assemble the register from gated rows (paper2/REGISTER.md).
+"""register_build.py -- assemble the register from gated rows (track2-ic-de/REGISTER.md).
 
     python tools/register_build.py [--rows DIR ...]
 
@@ -118,6 +118,9 @@ def normalize(r: dict) -> dict:
     else:
         r["private_named"] = bool(hits) or bool(r.get("private_named_wiki"))
         r["private_named_basis"] = "keywords" if hits else ("wiki-flag" if r.get("private_named_wiki") else "none")
+    # followup_search: defaulted from ONE definition in register_check, never
+    # re-invented here (2026-09-18)
+    r["followup_search"] = G.followup_cell(r)
     return r
 
 
@@ -359,7 +362,8 @@ def main() -> int:
     cols = ["register_id", "origin", "origin_ref", "publisher", "publisher_type", "publisher_tier", "url",
             "publish_date", "action_date", "title_original", "countries_executing", "orgs_named", "stratum",
             "medium", "in_scope", "unit", "modality", "arrests", "indictments", "convictions", "imprisonments",
-            "reconstitution", "recon_as_of", "coalition_only", "private_named", "in_census", "census_exclusion",
+            "reconstitution", "recon_as_of", "followup_search", "followup_searched_on", "followup_scope",
+            "coalition_only", "private_named", "in_census", "census_exclusion",
             "needs_review"]
     with open(REG / "register.csv", "w", encoding="utf-8", newline="") as fh:
         w = csv.writer(fh)
@@ -372,6 +376,8 @@ def main() -> int:
                 r["stratum"], r["medium"], r["in_scope"], r["unit"], ";".join(r["modality"]),
                 *[r["judicial"][s]["value"] for s in STAGES],
                 r["reconstitution"]["value"], r["reconstitution"].get("as_of") or "",
+                r["followup_search"]["status"], r["followup_search"].get("searched_on") or "",
+                r["followup_search"].get("scope") or "",
                 r["coalition_only"], r["private_named"], r["in_census"], r["census_exclusion"], r.get("needs_review", False),
             ])
 

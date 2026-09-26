@@ -1,15 +1,95 @@
 # Paper-2 coding manual — the single reading pass (DESIGN.md §6)
 
-v5, 2026-08-19 (this header read v3 for a day after the v4 changelog entry was
+v8, 2026-09-21 (this header read v3 for a day after the v4 changelog entry was
 written — codex IC reg2; and v2 for a day after v3 — codex R5. It is bumped in
-the same edit as the v5 entry, because twice is a pattern). This manual is both the agent instruction and the paper's
+the same edit as the version's changelog entry, because twice is a pattern —
+and it still read v7 for five days after the v8 entry, found 2026-09-26. A rule
+followed by hand failed a third time, so `tools/check_quoted_figures.py` now
+compares this line with the highest changelog entry). This manual is both the agent instruction and the paper's
 supplementary coding manual; every revision is committed. v1→v2 changes came
 out of the 8-operation pilot (changelog at bottom); the pilot found no coding
 errors but fourteen protocol defects, which is what pilots are for.
 
+## Scope — this manual is the shared rulebook, and the populations are annexes
+
+**Decided 2026-09-18 (user): one rulebook, two populations.** The alternative
+was a rulebook per register, and it was rejected because the two registers
+already share the unit, the tiering, the judicial funnel and the four-way
+missingness — maintaining two copies of those would guarantee they drift, and
+the review this decision answers asks for the two populations to be re-verified
+*against the same standard*.
+
+The decision did not create the structure; it made it explicit. Measured on
+2026-09-18, the rulebook is already three documents with one direction of
+inheritance:
+
+| document | what it governs | population |
+|---|---|---|
+| this file | per-cell rules: modality, judicial stage, reconstitution, the citation contract, capture tiers | **neutral** |
+| [`REGISTER.md`](REGISTER.md) | census predicate, stratum rule, fields, co-publication | Annex A — illicit streaming |
+| [`register/SCHEMA.md`](register/SCHEMA.md) | the same, for the all-cybercrime register, written as a diff against the two above | Annex B — all cybercrime |
+| [`NORMALIZATION.md`](NORMALIZATION.md) | an **index**, not a fourth rulebook: for each normalization axis, where its rule lives, what enforces it, and which annex it binds — plus the gaps nothing normalizes | both |
+
+`register/SCHEMA.md` §1 is the authoritative diff and names **five** departures
+— four in its table, and a fifth (what the stratum rule quantifies over) that the
+table cannot hold. **Two of the five bite on this manual**, and nothing else
+here is population-specific:
+
+> ⚠ This paragraph read *"five departures plus one"*, i.e. six, from 2026-09-18
+> until a cross-check on 2026-09-19. §1 says **Five**, and that five is already
+> the total: four in the table plus the stratum departure that the table cannot
+> hold. I read the table's four, added the stratum one, and arrived at five — then
+> added the stratum one a second time as the "plus one".
+>
+> ⚠ ⚠ That correction carried a second, wrong diagnosis for a day: it said I had
+> counted the table's five ROWS, `unit` included, and turned a no-change row into
+> a change. Counting rows gives five, not six, so the explanation could not
+> produce the error it explained. The conclusion was right both times and only the
+> reason was wrong, which is why nobody checked it — the shape L92 is about. Found
+> by opening §1 while fixing a stale "two of six" in this file's own changelog
+> below (cross-check R2 #7).
+
+- **row source.** Annex A codes one release per row; Annex B carries every
+  tier-1 release that announced the action. The `Unit and inputs` ladder below
+  is written for Annex A; Annex B's equivalent is `SCHEMA.md` §3.
+- **coded cell.** Annex A's cell is `{value, quote}`; Annex B's is
+  `{value, quote, source}`, because with two releases per action a span has to
+  name which one it is in. The citation contract below is the common part.
+
+⚠ **A shared rulebook is coupled to Annex A's replication bundle, by design.**
+This file and `REGISTER.md` are shipped in the bundle as `documents/` and their
+sha256 is pinned in `RELEASE-MANIFEST.md`, so **any edit here marks that manifest
+stale** and `python tools/register_release.py --check` fails until it is
+regenerated in the same commit. That is the tripwire working, not a defect: it
+forces a rule change made for Annex B to be seen by the paper that was coded
+under the old wording. Do not resolve it by dropping the documents from the
+bundle — a replication package without the manual the cells were coded under
+cannot be replicated. (Found on 2026-09-18 by the gate, on the first edit made
+under this decision.)
+
+⚠ **The two annexes are not comparable to each other today, and a sentence
+that compares them needs to say so.** Their scope fields do not map — Annex A's
+`medium` is seven illicit-streaming media, Annex B's `crime_type` is the wiki's
+crime-type slugs — and their census windows are different constants
+(`SCHEMA.md` §1). Sharing this rulebook makes the CELLS comparable, which is
+what it was chosen for; it does not make the POPULATIONS one population. Either
+state a mapping and defend it, or say the comparison is between two
+differently-bounded registers. Do not let the shared rulebook stand in for the
+mapping — that is the reading this warning exists to block.
+
+Everything else below — the codes, the counting unit, the `none-stated` /
+`not-reported` distinction, the `pending` floor, the language mappings, the
+durability rules — is written to hold for any enforcement action, and the
+examples are drawn from the streaming corpus only because that is the corpus
+that was coded first. **An example is not a scope limit**: if a rule's wording
+only works for streaming, that is a defect in the wording, to be reported rather
+than worked around.
+
 ## Unit and inputs
 
-One row per census operation (the producer's non-excluded IPTV rows). Inputs
+One row per census action. In Annex A that is the producer's non-excluded
+illicit-streaming rows; in Annex B it is an action in `actions-igo.csv`, derived
+by `python tools/derive_campaign_actions.py`. Inputs
 per operation, in priority order:
 1. The operation page `wiki/operations/<slug>.md` (frontmatter + body).
 2. The source pages it cites (`wiki/sources/...`) and their raw captures
@@ -152,7 +232,7 @@ sentence only.
 |---|---|
 | `successor-named` | the record names a successor/relaunch platform |
 | `relaunch-reported` | reconstitution reported without a named successor (incl. "new domains already up") |
-| ~~`target-persisted`~~ | **WITHDRAWN 2026-08-13** — invented in v3 for a row that turned out not to fit it (see changelog). The distinction it named is real, but this census contains no instance, and a category invented from a misreading is worse than its absence: it implies the distinction was looked for and found. Re-add only with a row whose record states the coded target itself stayed reachable |
+| ~~`target-persisted`~~ | **WITHDRAWN 2026-08-13. Re-added and withdrawn again 2026-09-21** — invented in v3 for a row that turned out not to fit it. The distinction it names is real, but this census contains no instance, and a category invented from a misreading is worse than its absence: it implies the distinction was looked for and found. Re-add only with a row whose record states **the coded target itself** stayed reachable. ⚠ **DPH-1 was coded into it for part of 2026-09-21 and does not qualify** — the record names two of its six domains but predicates *"currently active"* of the **network they form**, and reports their traffic collectively. That is the target's network, not the target (see the rule below), and the row is `open-question` |
 | `no-reconstitution-reported` | an affirmative down-status dated ≥14 days after the action |
 | `open-question` | an unresolved succession/effectiveness question about THIS target's post-action status. Record-raised and page-raised both qualify; **`page_only` distinguishes them and the statistics report the split** — the code is not narrowed to record-raised, because narrowing it would move rows into `not-reported` and inflate the paper's own headline about silence |
 | `not-reported` | no cited record speaks to what happened after |
@@ -174,6 +254,21 @@ Rules:
   (`successor-named` > `relaunch-reported` > `no-reconstitution-reported`)
   beat `open-question` beat `not-reported`. Two contradicting
   evidence-bearing values: code the later-dated one, note the contradiction.
+- **The record must speak of the TARGET, not of its network or its brand.** A
+  document that calls a *network* currently active, and names the coded domains
+  only as members of it, has not said the coded domains are reachable — its
+  figures are usually collective too. That is `open-question`: a record-raised
+  question about this target's post-action status. This rule was written on
+  2026-09-21 to admit a row and, applied, excluded it (cross-check R7 #1).
+- ⚠ **This column is about the TARGET's status, not the measure's efficacy.**
+    A territorial measure (an ISP blocking order) and a global reachability
+    report are about different populations, and the temptation is to call that
+  an open question. It is not: the column asks what the target did. What the
+  measure achieved inside its own jurisdiction is a separate question this
+  register does not code, and saying so belongs in the row's notes. (DPH-1
+  carried the territorial reasoning in its notes for one day; cross-check R6 #1
+  found the qualification was nowhere in this manual. It is still true of that
+  row and it is still not the reason for its value.)
 - Announcement-time down-status (<14 days) is not durability evidence →
   `not-reported` with a note.
 - "Target down but sibling/clone sites persist" codes the TARGET
@@ -182,6 +277,40 @@ Rules:
   effectiveness question, which is `open-question`.
 - `as_of` = date of the latest evidence, always filled for evidence-bearing
   values.
+
+## Column 4 — follow-up search status (added 2026-09-18)
+
+Column 3 answers *what happened to the target*. This one answers *what we did
+about looking*, and until it existed the two were one value: a row where nobody
+searched and a row where someone searched and found nothing both arrived as
+`reconstitution: not-reported`. The paper's §6 already states at paper level
+that no systematic per-target search across publishers was run; this makes the
+statement per row, so a search that IS run has somewhere to land.
+
+| value | meaning |
+|---|---|
+| `record-found` | a follow-up search was run and a post-action record was found |
+| `searched-none-found` | run, and nothing was found — **this is the silence the paper's durability figures are about** |
+| `searched-access-denied` | run, and blocked: paywall, closed court record, geoblock |
+| `no-search-recorded` | no search is recorded for this row |
+
+Rules:
+- The three `searched-*` values carry `searched_on` (a full date) and `scope`
+  (what was searched, in words — which indices, which publishers). A search
+  nobody can repeat is not a search.
+- `no-search-recorded` carries **neither**. Recording a search and then calling
+  the row unsearched is the one thing this column exists to make impossible.
+- ⚠ **The default is named for what is true of the RECORD.** An absent field
+  means nobody wrote a search down; it does not mean nobody looked. A coder may
+  have looked and written nothing, and reading an empty field as a fact about
+  the world is what L78 forbids. Do not rename it to `not-searched`.
+- This column is about the coder's action, not the publisher's words, so it
+  carries no quotation — the only cell in this manual that does not.
+
+Enforced by `register_check.check_row`; the enum, the default and the shape live
+once in `register_check.py` and `register_build.normalize` imports them.
+`python tools/test_followup_search.py` fires the rule at each branch, including
+the explicit `null` that a cross-check found taking the default in silence.
 
 ## Output format
 
@@ -229,7 +358,63 @@ producer normalizes both shims and new files must not use them.)
 
 ## Changelog
 
+- v8 2026-09-21 (two rules added to Column 3; `target-persisted` re-added and
+  withdrawn the same day). DPH-1's cell was `not-reported`; the corpus
+  follow-up search of 2026-09-20 found the MPA's 2025 USTR notorious-markets
+  submission naming two of the six domains its blocking order covered. Coding
+  it took three readings and the value ended where it started, so what the
+  round produced is two rules rather than a value:
+  - **The column is about the target's status, not the measure's efficacy.**
+    The first coding was `open-question` because the order is territorial and
+    the record reports global reach. True, and not what the column asks — and
+    the qualification was nowhere in this manual, only in the row's notes
+    (R6 #1).
+  - **The record must speak of the target, not of its network.** The second
+    coding was `target-persisted`, re-adding the value on its stated condition.
+    The proviso written into that re-add then excluded the row it was written
+    for: the submission predicates *"currently active"* of the **network** the
+    named domains form, and reports their traffic collectively (R7 #1). The
+    value is withdrawn again and has no instance, which is the state the
+    2026-08-13 note asked for.
+  The cell is `open-question`, record-raised. Effect on the census: one row
+  moves out of `not-reported`, so `not-reported` is 232/240 (96.7%) and the
+  strict-silence read is unchanged at 236/240 (98.3%) — an open question counts
+  as silence on either reading.
 - v1 2026-08-13: initial protocol.
+- v7 2026-09-18 (Column 4, follow-up search status). The first coding rule
+  added since the register turn, and the first cell that carries no quotation:
+  it records the coder's action, not the publisher's words. It exists because
+  `reconstitution: not-reported` was carrying two different facts -- nobody
+  looked, and someone looked and found nothing -- and the paper's silence
+  figures are about the second. No existing value changed: every row defaulted
+  to `no-search-recorded`, census stayed 240, and the bundle's cell count stayed
+  2626. ⚠ The rule's own firing test found a hole on its first run: the default
+  helper folded ANY non-mapping to the default, so a row carrying the value
+  where the cell belongs was read as unsearched and the coder's statement
+  vanished (L64). The shape is now checked before defaulting.
+  Also in v7 (2026-09-19): the Scope section gained the non-comparability
+  warning. The rulebook is shared so the cells can be read against one
+  standard; the populations remain two, with different scope fields and
+  different windows, and nothing in this manual licenses a sentence that
+  treats them as one (`NORMALIZATION.md` gap 3).
+- v6 2026-09-18 (scope declaration — one rulebook, two populations; no coding
+  rule changed). The user's decision of 2026-09-18 chose a single rulebook over
+  one per register. Writing it down found that the structure existed already and
+  only ran one way: `register/SCHEMA.md` §1 states what it inherits and what it
+  changes, while this manual and `REGISTER.md` said nothing about being
+  inherited from, so a reader starting here could not tell which sentences were
+  meant to hold for the other population. The new `Scope` section states it,
+  names the two of five departures that bite on this file, and says that the
+  streaming examples are examples and not scope limits. ⚠ The `Unit and inputs`
+  sentence was the one genuinely population-bound rule in the file — it said
+  *"the producer's non-excluded IPTV rows"* — and it now names a row source per
+  annex. Checked while writing this with
+  `grep -in "iptv\|stream\|piracy\|rights-holder\|subscriber" track2-ic-de/CODING.md`:
+  every other hit is an example, a definition's illustration (*Piracy
+  Shield-type*, *rights-holders*) or a changelog entry, and none of them
+  restricts a rule to streaming. ⚠ No count is given here on purpose — this
+  section is itself matched by that grep, so any number written beside it counts
+  its own sentences and moves whenever this entry is edited (L73).
 - v5 2026-08-19 (REVERSE `pending` screen, four read-only verifiers, one per language group).
   The v4 floor had only ever been applied FORWARD -- rows were moved INTO `pending`, and the 78
   police-published cells already carrying it were never tested against the rule. A rule that only

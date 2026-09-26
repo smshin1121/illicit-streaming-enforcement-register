@@ -1,5 +1,5 @@
 """register_from_ic.py -- convert the IC coding rows (paper2/coding/*.json) into
-register rows (paper2/REGISTER.md schema), so the 67 census actions the wiki
+register rows (track2-ic-de/REGISTER.md schema), so the 67 census actions the wiki
 already coded enter the register through the same gate as everything else.
 
     python tools/register_from_ic.py            # writes paper2/register/rows_ic/<slug>.json + .txt

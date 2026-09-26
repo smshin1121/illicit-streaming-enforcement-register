@@ -1,6 +1,13 @@
-"""register_stats.py -- the paper's tables, computed from paper2/register/register.json.
+"""register_stats.py -- the paper's tables, computed from the register's register.json.
 
-    python tools/register_stats.py
+    python tools/register_stats.py            # the working repository
+    python producers/register_stats.py        # the release bundle, from its root
+
+Where the register is depends on which of the two layouts this file sits in --
+see LAYOUTS. The output does not name the layout, so both runs print the same
+bytes: the release publishes this output as `register_stats.txt` and says a run
+inside the bundle reproduces it byte for byte, and `register_release.py` fails
+the build unless it does.
 
 Census = rows with in_census true (REGISTER.md predicate). Everything is a
 proportion with a Clopper-Pearson exact 95% interval (borrowed from
@@ -28,12 +35,37 @@ sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from paper2_stats import clopper_pearson  # noqa: E402
 
-REPO = Path(__file__).resolve().parents[1]
-REG = REPO / "paper2" / "register" / "register.json"
+HERE = Path(__file__).resolve().parent
+#: Where the register is, keyed on the directory this file sits in -- one
+#: layout each, and no guessing between them. Until 2026-09-23 there was only
+#: the first entry, so the copy the release bundle ships under `producers/`
+#: looked for `<bundle>/paper2/register/register.json`, which no bundle has, and
+#: the bundle's documented reproduction command exited 1 (OPEN_FINDINGS #94).
+#: Keyed on the directory rather than on which file exists: a stray
+#: `register.json` beside the repository's `tools/` must not be read in place
+#: of the real one without anyone saying so.
+LAYOUTS = {"tools": HERE.parent / "paper2" / "register" / "register.json",   # working repository
+           "producers": HERE.parent / "register.json"}                      # release bundle
+REG = LAYOUTS.get(HERE.name)
 STAGES = ("arrests", "indictments", "convictions", "imprisonments")
 MODS = ("arrest-search", "asset-seizure", "hosting-takedown", "domain-seizure", "blocking-order",
         "content-delisting", "payment-disruption", "intermediary-process", "end-user-action", "voluntary-transfer")
-RECON = ("not-reported", "open-question", "no-reconstitution-reported", "relaunch-reported", "successor-named")
+#: order is for reading, weakest first. MEMBERSHIP comes from the gate --
+#: and until 2026-09-22 that was a comment, not a fact: this tuple was an
+#: independent literal and `RECON is register_check.RECON` was False while
+#: the commit message said all three importers held the same object
+#: (astra R1 #9). The check below is what makes the sentence true -- and it is
+#: an explicit raise, not an `assert`: `python -O` strips asserts, so the first
+#: version guarded ordinary runs only and an optimised run with a drifted
+#: vocabulary printed every table and exited 0 (astra R2 #3).
+#: `test_register_check.py` fires it both ways.
+from register_check import RECON as _GATE_RECON, EVIDENCE_BEARING  # noqa: E402
+RECON = ("not-reported", "open-question", "no-reconstitution-reported",
+         "relaunch-reported", "successor-named")
+if set(RECON) != _GATE_RECON:
+    raise RuntimeError(
+        f"register_stats.RECON drifted from the gate: "
+        f"{sorted(set(RECON) ^ _GATE_RECON)}")
 
 
 def f(k, n):
@@ -48,6 +80,18 @@ def positive(v: str) -> bool:
 
 
 def main() -> int:
+    if REG is None or not REG.is_file():
+        print(f"[FAIL] no register for this layout: this file is in `{HERE.name}/`, and the "
+              f"register is read from paper2/register/register.json beside `tools/` (the working "
+              f"repository) or from register.json beside `producers/` (the release bundle)"
+              + (f"; looked for {REG}" if REG else ""), file=sys.stderr)
+        return 1
+    # LF on every platform. The release publishes this output as a file and says
+    # a run reproduces it byte for byte; Windows' stdout writes CRLF otherwise --
+    # measured 2026-09-23 inside a bundle: 139 CRLF against the file's 0, every
+    # line identical (#94). Set here, after every import has run its own
+    # reconfigure.
+    sys.stdout.reconfigure(newline="\n")
     d = json.loads(REG.read_text(encoding="utf-8"))
     rows = d["rows"]
     census = [r for r in rows if r.get("in_census")]
@@ -56,7 +100,7 @@ def main() -> int:
               "pooled": census}
     print(f"register rows={len(rows)}  CENSUS={len(census)}  "
           f"cooperative={len(strata['cooperative'])}  domestic={len(strata['domestic'])}")
-    print("(source: paper2/register/register.json; intervals Clopper-Pearson exact 95%; no tests)\n")
+    print("(source: register.json; intervals Clopper-Pearson exact 95%; no tests)\n")
 
     print("[R1] modality prevalence")
     print(f"  {'code':<22}" + "".join(f"{s:>34}" for s in strata))
@@ -94,10 +138,10 @@ def main() -> int:
         f"{f(sum(1 for r in rs if r['reconstitution']['value']!='not-reported' and r['reconstitution'].get('page_only')), len(rs)):>34}"
         for rs in strata.values()))
     print(f"  {'-- EVIDENCE-BEARING outcome':<28}" + "".join(
-        f"{f(sum(1 for r in rs if r['reconstitution']['value'] not in ('not-reported', 'open-question')), len(rs)):>34}"
+        f"{f(sum(1 for r in rs if r['reconstitution']['value'] in EVIDENCE_BEARING), len(rs)):>34}"
         for rs in strata.values()))
     print(f"  {'-- silence, record-only read':<28}" + "".join(
-        f"{f(sum(1 for r in rs if r['reconstitution']['value'] in ('not-reported', 'open-question')), len(rs)):>34}"
+        f"{f(sum(1 for r in rs if r['reconstitution']['value'] not in EVIDENCE_BEARING), len(rs)):>34}"
         for rs in strata.values()))
     print("  (page-raised = the coding's `page_only`: the knowledge base's own note that the releases answer nothing, "
           "not a post-action record. The last two lines are the same census read two ways: a reader who counts an "
@@ -140,7 +184,10 @@ def main() -> int:
         dy = sum(1 for r in strata["domestic"] if r["publish_date"][:4] == y)
         sub = [r for r in census if r["publish_date"][:4] == y]
         men = sum(1 for r in sub if r["reconstitution"]["value"] != "not-reported")
-        ev = sum(1 for r in sub if r["reconstitution"]["value"] not in ("not-reported", "open-question"))
+        # EVIDENCE_BEARING, not the complement of two literals: this and the
+        # two sites below stood still while R3 followed a changed vocabulary
+        # (astra R2 #4). test_register_check.py cuts a value and checks all move.
+        ev = sum(1 for r in sub if r["reconstitution"]["value"] in EVIDENCE_BEARING)
         print(f"  {y:<8}{cy:>13}{dy:>10}{cy+dy:>8}{men:>26}{ev:>20}")
     # The right-censoring claim needs an age table, not a count table: "silence does not decay
     # with age" was asserted from R8's totals, which say nothing about age (codex IC reg3 #17).
@@ -149,7 +196,7 @@ def main() -> int:
                         ("2020-2022 (>=3y)", "2020", "2022"), ("2023-2026 (<3y)", "2023", "2026")):
         sub = [r for r in census if lo <= r["publish_date"][:4] <= hi]
         men = sum(1 for r in sub if r["reconstitution"]["value"] != "not-reported")
-        ev = sum(1 for r in sub if r["reconstitution"]["value"] not in ("not-reported", "open-question"))
+        ev = sum(1 for r in sub if r["reconstitution"]["value"] in EVIDENCE_BEARING)
         print(f"    {lab:<20} n={len(sub):3d}  any mention {f(men, len(sub))}   evidence-bearing {f(ev, len(sub))}")
     print("    (opportunity-at-risk is TIME SINCE PUBLICATION only. It is not an ascertainment measure: "
           "no systematic follow-up search was run for any cohort, so a flat gradient bounds right-censoring "
@@ -170,7 +217,7 @@ def main() -> int:
         co = [r for r in sub if r["stratum"] == "cooperative"]
         do = [r for r in sub if r["stratum"] == "domestic"]
         if lab.startswith("page-raised"):
-            sil = lambda rs: f(sum(1 for r in rs if r["reconstitution"]["value"] in ("not-reported", "open-question")), len(rs))
+            sil = lambda rs: f(sum(1 for r in rs if r["reconstitution"]["value"] not in EVIDENCE_BEARING), len(rs))
         else:
             sil = lambda rs: f(sum(1 for r in rs if r["reconstitution"]["value"] == "not-reported"), len(rs))
         print(f"  {lab}: n={len(sub)} ({len(co)} coop / {len(do)} dom) -- {why}")
@@ -180,6 +227,12 @@ def main() -> int:
                   f"   silence {sil(rs)}")
 
     print("\n[R6] provenance")
+    # The totals the manuscript quotes, printed as totals: the line below is a
+    # dict keyed by (origin, stratum), and a figure a reader must add up is not
+    # a figure the registry can compare (sol R6 #2).
+    _o = Counter("walk" if r["origin"].startswith("walk") else r["origin"] for r in census)
+    print(f"  census rows by origin: walk={_o.pop('walk', 0)} de={_o.pop('de', 0)} ic={_o.pop('ic', 0)}"
+          + (f" other={dict(_o)}" if _o else ""))
     print("  origin x stratum:", dict(Counter((r["origin"], r["stratum"]) for r in census)))
     print("  stratum_basis=wiki-fields:", sum(1 for r in census if r.get("stratum_basis") == "wiki-fields"),
           "(IC rows; stratum from participating_countries, not a source re-read)")

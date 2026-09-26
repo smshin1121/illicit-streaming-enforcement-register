@@ -1,26 +1,33 @@
-"""register_replicate_csv.py -- recompute the paper's tables from the PUBLISHED CSVs alone.
+"""register_replicate_csv.py -- recompute the paper's headline counts from the PUBLISHED CSVs alone.
 
     python register_replicate_csv.py [bundle_dir]     # default: the directory this file sits in
 
 This is the replication bundle's own independent check, and it ships inside the
 bundle as `replicate.py`. It reads ONLY `register_rows.csv` and
 `register_cells.csv`, imports nothing from this repository, and never opens
-`register.json`. Then it compares what it computed against
-`register_stats.txt`, the producer output the paper's tables are transcribed
-from, and exits 1 on any disagreement.
+`register.json`. From those two files it recomputes the census size, the two
+strata sizes, and the pooled count of every modality code, judicial stage and
+durability value -- the headline counts of R1, R2a and R3 -- and checks that
+each appears somewhere in `register_stats.txt`, the producer output the paper's
+tables are transcribed from, exiting 1 if one does not. It prints the
+per-stratum columns without checking them and does not recompute R2b or R4
+onward. ⚠ Until 2026-09-25 this docstring and the success line said the script
+recomputed "the paper's tables" and that "the published columns determine the
+published tables"; cutting R4 onward out of `register_stats.txt` left it at
+exit 0 (sol R4 #1, R5 #5).
 
 WHY IT EXISTS. "The data are published" is a claim with a failure mode: a
 dataset can be complete enough to look at and not complete enough to recompute
 from. The released CSVs carried 28 row-level columns and no quotations until
 2026-08-19; a reader could have opened them, believed the data were public, and
 still been unable to reproduce a single table. This script is the test of the
-claim, run on every bundle build -- if the CSVs ever stop supporting the
-figures, the bundle does not get built.
+claim for the counts it recomputes, run on every bundle build -- if the CSVs
+stop supporting one of them, the bundle does not get built.
 
-WHAT IT DOES NOT TEST. That the codes are RIGHT. It tests that the published
-columns determine the published tables. Whether a cell reflects its release is
-what the character-exact quotation in `register_cells.csv` is for, and whether
-the release still says it is what `register_check.py --refetch N` is for.
+WHAT IT DOES NOT TEST. That the codes are RIGHT, and any table beyond the
+counts above. Whether a cell reflects its record is what the quotation in
+`register_cells.csv` is for; whether the page still says it is a search of the
+row's URLs (see the bundle README), which nothing in the bundle runs.
 """
 from __future__ import annotations
 
@@ -103,9 +110,10 @@ def main(argv) -> int:
         print(f"  MISMATCH {what}: computed '{frag.strip()}' does not appear in the producer output")
     if bad:
         return 1
-    print("[OK] the published columns determine the published tables")
-    print("[SCOPE] this proves the CSVs support the figures. It does not test whether a code is "
-          "right -- that is what the quotation in each cell row is for.")
+    print("[OK] every recomputed headline count appears in register_stats.txt")
+    print("[SCOPE] this shows the CSVs support the census and strata sizes and the R1/R2a/R3 "
+          "pooled counts. It does not check the per-stratum columns, R2b or R4 onward, and it "
+          "does not test whether a code is right -- that is what each cell's quotation is for.")
     return 0
 
 

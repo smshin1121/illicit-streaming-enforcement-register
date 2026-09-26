@@ -10,7 +10,7 @@ two walk groups, and counting entities in one's head is exactly the operation
 L69 says to replace with a producer.
 
 WHAT IT COUNTS. The rows of the tables under `## Walk log` in
-`paper2/ACQUISITION_LOG.md`, which the walk protocol defines as one row per
+`track2-ic-de/ACQUISITION_LOG.md`, which the walk protocol defines as one row per
 publisher index walked:
 
     | publisher | index URL | range walked | fetch rung | hits | blocked | notes |
@@ -53,7 +53,7 @@ except Exception:  # pragma: no cover -- older interpreters
     pass
 
 REPO = pathlib.Path(__file__).resolve().parents[1]
-LOG = REPO / "paper2" / "ACQUISITION_LOG.md"
+LOG = REPO / "track2-ic-de" / "ACQUISITION_LOG.md"
 
 START = "## Walk log"
 STOP = "## Coverage caveats"
